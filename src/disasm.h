@@ -9,11 +9,19 @@
 #include "asm_utils.h"
 
 /**
- * Methods translates file.vexe with byteCode into file.vara with mnemonics
+ * Method translates binary file with byteCode into file.txt with mnemonics
  * @param fileWithByteCode
  * @param fileWithMnemonics
- * @return
+ * @return the success of function
  */
 int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics);
+
+/**
+ * Method translates byteCodes into mnemonics
+ * @param byteCodes
+ * @param size
+ * @param file
+ */
+void disassemblerToFile(char* byteCodes, size_t size, FILE* file);
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_DISASM_H

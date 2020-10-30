@@ -1,6 +1,25 @@
-# Stack-Mashine
+# Stack-Machine
 
 ## Description
+First version of machine stack and assembler / disassembler.\
+Not all commands are supported yet.\
+This version of the stack machine is implemented without registers.
+
+| Command | Description |
+| --- | --- |
+| push num| Pushes num to the top of the stack |
+| pop | Pops num from the top of the stack |
+| add | Pops two values from the stack and counts sum of its |
+| sub | Pops two values from the stack and counts -sum of its |
+| mul | Pops two values from the stack and counts product of its |
+| div | Pops two values from the stack and counts div of its |
+| sqrt | Pops value from the top of stack and counts sqrt(value) |
+| in | Waits for input value from the terminal //not works yet|
+| out | Inputs value from the top of the stack|
+| hlt | Еnds program execution |
+
+
+
 
 ## Installing
 ```bash
@@ -14,6 +33,27 @@ git clone https://github.com/vvdvortsova/cpu_assembler_diassembler.git
 - Log file for stack
     - stack_logs.txt
 ## Run
+
+To run stack machine run program with arg: argv[1] = binary file with assembler
+```bash
+cmake .
+make
+./stack_machine masm
+```
+To run assembler run program with args: argv[1] = .txt file with mnemonics argv, [2] = binary file for output with assembler
+
+```bash
+cmake .
+make
+./asm asm.txt masm
+```
+To run disassembler run program with args: argv[1] = binary file for output with assembler, argv[2] = .txt file with mnemonics
+
+```bash
+cmake .
+make
+./disasm masm disasm.txt
+```
 
 ## Documentation
 You can watch documentation by opening

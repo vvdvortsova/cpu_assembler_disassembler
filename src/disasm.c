@@ -1,31 +1,17 @@
 #include "disasm.h"
 
-char* getStringOfOpCode(byte code) {
-    if (code == PUSH) return "push";
-    if (code == POP)  return "pop";
-    if (code == ADD)  return "add";
-    if (code == SUB)  return "sub";
-    if (code == MUL)  return "mul";
-    if (code == DIV)  return "div";
-    if (code == SQRT) return "sqrt";
-    if (code == HLT)  return "hlt";
-    if (code == IN)   return "in";
-    if (code == OUT)  return "out";
-    else return NULL;
-}
-
-void disassemblerToFile(char* instructions, size_t size, FILE* file) {
+void disassemblerToFile(char* byteCodes, size_t size, FILE* file) {
     for (size_t i = 0; i < size;) {
         double arg = 0;
-        char* code = getStringOfOpCode(instructions[i]);
+        char* code = getStringOfOpCode(byteCodes[i]);
         if(code == NULL) {
             fprintf(stderr,"Unexpected instruction!\n");
             exit(EXIT_FAILURE);
         }
-        if(instructions[i] == PUSH){
+        if(byteCodes[i] == PUSH){
             i++;
             fprintf(file,"%s ",code);
-            arg = *(double*)(instructions + i);
+            arg = *(double*)(byteCodes + i);
             i += sizeof(arg);
             fprintf(file, "%g\n", arg);
         } else{
@@ -40,7 +26,7 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics){
     assert(fileWithMnemonics != NULL);
 
     int size = 0;
-    char* instructions = getBuffer(fileWithByteCode, &size, "rb");
+    char* byteCodes = getBuffer(fileWithByteCode, &size, "rb");
     FILE* fileMnemonics = fopen(fileWithMnemonics, "w");
 
     if(fileMnemonics == NULL){
@@ -48,7 +34,7 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics){
         exit(EXIT_FAILURE);
     }
 
-    disassemblerToFile(instructions, size, fileMnemonics);
+    disassemblerToFile(byteCodes, size, fileMnemonics);
 
     fclose(fileMnemonics);
 }

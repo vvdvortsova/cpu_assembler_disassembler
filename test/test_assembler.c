@@ -1,7 +1,7 @@
-
-//#include "../src/asm.vexe.h"
+//TODO: add tests
+//#include "../src/asm.h"
 //int main(){
-//    assembler("asm.vexe.txt","asm.vexe");
+//    assembler("asm.txt","asm");
 //
 //}
 //

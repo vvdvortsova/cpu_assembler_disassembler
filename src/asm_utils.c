@@ -15,6 +15,20 @@ byte HLT = 0b00001001;
 byte IN = 0b00001010;
 byte OUT = 0b00001011;
 
+char* getStringOfOpCode(byte code) {
+    if (code == PUSH) return "push";
+    if (code == POP)  return "pop";
+    if (code == ADD)  return "add";
+    if (code == SUB)  return "sub";
+    if (code == MUL)  return "mul";
+    if (code == DIV)  return "div";
+    if (code == SQRT) return "sqrt";
+    if (code == HLT)  return "hlt";
+    if (code == IN)   return "in";
+    if (code == OUT)  return "out";
+    else return NULL;
+}
+
 char* getBuffer(char* fName, int* size, char* FLAG){
     assert(fName != NULL);
     assert(size != NULL);

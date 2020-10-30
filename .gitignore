@@ -6,3 +6,6 @@
 /CMakeCache.txt
 /Makefile
 /CMakeFiles/
+/cpu_assembler_disassembler.cbp
+/disasm
+/stack_machine

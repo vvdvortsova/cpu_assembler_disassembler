@@ -15,5 +15,5 @@ byte HLT;
 byte OUT;
 byte IN;
 char* getBuffer(char* fName, int* size, char* FLAG);
-
+char* getStringOfOpCode(byte code);
 #endif //CPU_ASSEMBLER_DISASSEMBLER_ASM_UTILS_H

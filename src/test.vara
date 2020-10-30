@@ -1,6 +1,0 @@
-push 78
-add
-pop
-push 2
-sub
-hlt

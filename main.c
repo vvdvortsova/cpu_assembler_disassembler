@@ -4,12 +4,12 @@
 
 
 int main() {
-    assembler("../src/test.vara","../src/asm.vexe");
+    assembler("../src/test.txt","../src/asm");
     int size;
-    char* instructions = getBuffer("../src/asm.vexe", &size, "rb");
+    char* instructions = getBuffer("../src/asm", &size, "rb");
     printf("%s\n", instructions);
 
     printf("Hello, World!\n");
-    disAssembler("../src/asm.vexe","../src/disasm.txt");
+    disAssembler("../src/asm","../src/disasm.txt");
     return 0;
 }
