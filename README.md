@@ -14,7 +14,7 @@ This version of the stack machine is implemented without registers.
 | mul | Pops two values from the stack and counts product of its |
 | div | Pops two values from the stack and counts div of its |
 | sqrt | Pops value from the top of stack and counts sqrt(value) |
-| in | Waits for input value from the terminal //not works yet|
+| in | Waits for input value from the terminal|
 | out | Inputs value from the top of the stack|
 | hlt | Еnds program execution |
 

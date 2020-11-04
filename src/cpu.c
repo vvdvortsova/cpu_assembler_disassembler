@@ -20,70 +20,78 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
             fprintf(stderr,"Unexpected instruction!\n");
             exit(EXIT_FAILURE);
         }
-        if(byteCodes[i] == PUSH) {
-            cpu->currentOp = PUSH;
-            i++;
-            arg = *(double*)(byteCodes + i);
-            StackPush_double(cpu->stack,arg);
-            i += sizeof(arg);
-        } else if(byteCodes[i] == ADD) {
-            ++i;
-            cpu->currentOp = ADD;
-            double arg1 = StackPop_double(cpu->stack);
-            double arg2 = StackPop_double(cpu->stack);
-            StackPush_double(cpu->stack, (arg1 + arg2));
-        } else if(byteCodes[i] == SUB) {
-            ++i;
-            cpu->currentOp = SUB;
-            double arg1 = StackPop_double(cpu->stack);
-            double arg2 = StackPop_double(cpu->stack);
-            StackPush_double(cpu->stack, (arg1 - arg2));
-        } else if(byteCodes[i] == MUL) {
-            ++i;
-            cpu->currentOp = MUL;
-            double arg1 = StackPop_double(cpu->stack);
-            double arg2 = StackPop_double(cpu->stack);
-            StackPush_double(cpu->stack, (arg1 * arg2));
+        double arg1 = 0;
+        double arg2 = 0;
+        switch(byteCodes[i]){
+            case PUSH:
+                cpu->currentOp = PUSH;
+                i++;
+                arg = *(double*)(byteCodes + i);
+                StackPush_double(cpu->stack,arg);
+                i += sizeof(arg);
+                break;
+            case ADD:
+                ++i;
+                cpu->currentOp = ADD;
+                arg1 = StackPop_double(cpu->stack);
+                arg2 = StackPop_double(cpu->stack);
+                StackPush_double(cpu->stack, (arg1 + arg2));
+                break;
+            case SUB:
+                ++i;
+                cpu->currentOp = SUB;
+                arg1 = StackPop_double(cpu->stack);
+                arg2 = StackPop_double(cpu->stack);
+                StackPush_double(cpu->stack, (arg1 - arg2));
+                break;
+            case MUL:
+                ++i;
+                cpu->currentOp = MUL;
+                arg1 = StackPop_double(cpu->stack);
+                arg2 = StackPop_double(cpu->stack);
+                StackPush_double(cpu->stack, (arg1 * arg2));
+                break;
+            case DIV:
+                ++i;
+                cpu->currentOp = DIV;
+                arg1 = StackPop_double(cpu->stack);
+                arg2 = StackPop_double(cpu->stack);
+                //TODO:check
+                StackPush_double(cpu->stack, (arg1 / arg2));
+                break;
+            case SQRT:
+                ++i;
+                cpu->currentOp = SQRT;
+                arg1 = StackPop_double(cpu->stack);
+                double res = sqrt(arg1);
+                //TODO:check
+                StackPush_double(cpu->stack, res);
+                break;
+            case OUT:
+                ++i;
+                cpu->currentOp = OUT;
+                arg1 = StackPop_double(cpu->stack);
+                printf("Result = %g\n",arg1);
+                break;
+            case IN:
+                ++i;
+                cpu->currentOp = IN;
+                arg1 = getDoubleFromInput("Input value pls: ");
+                StackPush_double(cpu->stack, arg1);
+                break;
+            case HLT:
+                ++i;
+                cpu->currentOp = HLT;
+                printf("The program has finished executing!\n");
+                return EXIT_SUCCESS;
+            default:
+                fprintf(stderr,"Unexpected command: %s in binary file: %x !\n", code, byteCodes[i]);
+                return EXIT_FAILURE;
 
-        }else if(byteCodes[i] == DIV) {
-            ++i;
-            cpu->currentOp = DIV;
-            double arg1 = StackPop_double(cpu->stack);
-            double arg2 = StackPop_double(cpu->stack);
-            //TODO:check
-            StackPush_double(cpu->stack, (arg1 / arg2));
-        } else if(byteCodes[i] == SQRT) {
-            ++i;
-            cpu->currentOp = SQRT;
-            double arg1 = StackPop_double(cpu->stack);
-            double res = sqrt(arg1);
-            //TODO:check
-            StackPush_double(cpu->stack, res);
-        } else if(byteCodes[i] == OUT) {//TODO let it work))
-            ++i;
-            cpu->currentOp = OUT;
-            double arg1 = StackPop_double(cpu->stack);
-            printf("%g\n",arg1);
-        }
-        else if(byteCodes[i] == IN) { //TODO: how to?
-            ++i;
-            cpu->currentOp = IN;
-            //TODO
-        }
-        else if(byteCodes[i] == HLT) {
-            ++i;
-            double arg1 = StackPop_double(cpu->stack);
-            printf("result = %g\n", arg1);
-            cpu->currentOp = HLT;
-            printf("The program has finished executing!\n");
-            return EXIT_SUCCESS;
         }
     }
 
-    return EXIT_FAILURE;
 }
-
-
 
 int countResult(char* fileName) {
     assert(fileName != NULL);
@@ -110,4 +118,16 @@ int main(int argc, char** argv) {
     printf("Pls!Check your arguments!\n");
     exit(EXIT_FAILURE);
 
+}
+
+double getDoubleFromInput(char message[]){
+    double number;
+    printf("%s", message);
+    int correctInput = scanf("%lg", &number);
+    while(correctInput != 1){
+        while (getchar() != EOF && getchar() != '\n' && getchar() != '\0');
+        printf("Wrong input,try again\n%s", message);
+        correctInput = scanf("%lg", &number);
+    }
+    return number;
 }

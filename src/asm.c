@@ -10,8 +10,8 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "div", len) == 0)  return DIV;
     if (strncmp(code, "sqrt", len) == 0) return SQRT;
     if (strncmp(code, "hlt", len) == 0)  return HLT;
-    if (strcmp(code, "in") == 0)         return IN;
-    if (strcmp(code, "out") == 0)        return OUT;
+    if (strncmp(code, "in",len) == 0)         return IN;
+    if (strncmp(code, "out",len) == 0)        return OUT;
     return INVALID_OP_ERROR;
 }
 

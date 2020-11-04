@@ -3,4 +3,9 @@ push 78
 add
 push 2
 sub
+out
+in
+in
+add
+out
 hlt

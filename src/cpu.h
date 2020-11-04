@@ -23,5 +23,11 @@ int countResult(char* fileName);
 int initCPU(CPU* cpu);
 int destructorCPU(CPU* cpu);
 int processMachine(char* byteCodes, size_t size, CPU* cpu);
+/**
+* @brief                 Get double values from input stream for quadratic equation
+* @param[in]  message[]  The message for user
+* @return     number     double value
+*/
+double getDoubleFromInput(char message[]);
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_CPU_H
