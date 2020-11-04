@@ -1,11 +1,15 @@
 push 78
 push 78
-add
+div
 push 2
 sub
 out
 in
 in
 add
+push 9
+sqrt
+push -9
+sqrt
 out
 hlt

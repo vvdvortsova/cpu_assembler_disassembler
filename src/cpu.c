@@ -56,15 +56,21 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 cpu->currentOp = DIV;
                 arg1 = StackPop_double(cpu->stack);
                 arg2 = StackPop_double(cpu->stack);
-                //TODO:check
+                if(arg2 == 0){
+                    fprintf(stderr,"Division by zero! %g / %g\n", arg1, arg2);
+                    return EXIT_FAILURE;
+                }
                 StackPush_double(cpu->stack, (arg1 / arg2));
                 break;
             case SQRT:
                 ++i;
                 cpu->currentOp = SQRT;
                 arg1 = StackPop_double(cpu->stack);
+                if(arg1 < 0){
+                    fprintf(stderr,"Sqrt from negative number! %g\n", arg1);
+                    return EXIT_FAILURE;
+                }
                 double res = sqrt(arg1);
-                //TODO:check
                 StackPush_double(cpu->stack, res);
                 break;
             case OUT:
@@ -80,7 +86,6 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 StackPush_double(cpu->stack, arg1);
                 break;
             case HLT:
-                ++i;
                 cpu->currentOp = HLT;
                 printf("The program has finished executing!\n");
                 return EXIT_SUCCESS;
@@ -101,6 +106,11 @@ int countResult(char* fileName) {
     CPU cpu = { &stack, 0, 0};
     initCPU(&cpu);
 
+    if(byteCodes[size-1] != HLT){
+        fprintf(stderr,"The program can't finish executing!\n");
+        fprintf(stderr,"Because of the lack of HLT command at the end of binary file!\n");
+        return EXIT_FAILURE;
+    }
     if(processMachine(byteCodes, size, &cpu) != EXIT_SUCCESS){
         fprintf(stderr,"The program has not finished executing!\n");
         return EXIT_FAILURE;
