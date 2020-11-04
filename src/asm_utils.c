@@ -4,29 +4,21 @@
 #include "asm_utils.h"
 
 
-byte PUSH = 0b00000010;
-byte POP = 0b00000011;
-byte ADD = 0b00000100;
-byte SUB = 0b00000101;
-byte MUL = 0b00000110;
-byte DIV = 0b00000111;
-byte SQRT = 0b00001000;
-byte HLT = 0b00001001;
-byte IN = 0b00001010;
-byte OUT = 0b00001011;
 
-char* getStringOfOpCode(byte code) {
-    if (code == PUSH) return "push";
-    if (code == POP)  return "pop";
-    if (code == ADD)  return "add";
-    if (code == SUB)  return "sub";
-    if (code == MUL)  return "mul";
-    if (code == DIV)  return "div";
-    if (code == SQRT) return "sqrt";
-    if (code == HLT)  return "hlt";
-    if (code == IN)   return "in";
-    if (code == OUT)  return "out";
-    else return NULL;
+const char* getStringOfOpCode(byte code) {
+    switch (code){
+        case PUSH: return "push";
+        case POP:  return "pop";
+        case ADD:  return "add";
+        case SUB:  return "sub";
+        case MUL:  return "mul";
+        case DIV:  return "div";
+        case SQRT: return "sqrt";
+        case HLT:  return "hlt";
+        case IN:   return "in";
+        case OUT:  return "out";
+        default:   return NULL;
+    }
 }
 
 char* getBuffer(char* fName, int* size, char* FLAG){

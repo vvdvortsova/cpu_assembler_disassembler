@@ -3,24 +3,27 @@
 void disassemblerToFile(char* byteCodes, size_t size, FILE* file) {
     for (size_t i = 0; i < size;) {
         double arg = 0;
-        char* code = getStringOfOpCode(byteCodes[i]);
+        const char* code = getStringOfOpCode(byteCodes[i]);
         if(code == NULL) {
             fprintf(stderr,"Unexpected instruction!\n");
             exit(EXIT_FAILURE);
         }
-        if(byteCodes[i] == PUSH){
-            i++;
-            fprintf(file,"%s ",code);
-            arg = *(double*)(byteCodes + i);
-            i += sizeof(arg);
-            fprintf(file, "%g\n", arg);
-        } else{
-            ++i;
-            fprintf(file,"%s\n",code);
+        switch(byteCodes[i]) {
+            case PUSH:
+                i++;
+                fprintf(file,"%s ",code);
+                arg = *(double*)(byteCodes + i);
+                i += sizeof(arg);
+                fprintf(file, "%g\n", arg);
+                break;
+            default:
+                ++i;
+                fprintf(file,"%s\n",code);
+                break;
         }
     }
-
 }
+
 int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics){
     assert(fileWithByteCode != NULL);
     assert(fileWithMnemonics != NULL);

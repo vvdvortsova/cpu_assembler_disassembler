@@ -40,7 +40,8 @@ int writeTokenToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, 
             return EXIT_SUCCESS;
         }
     } else{
-        fprintf(stderr, "Can't identify the current instruction!\n");
+
+        fprintf(stderr, "Can't identify the current instruction! mnemonic = %s\n", *mnemonicBegin);
         exit(EXIT_FAILURE);
     }
 }
