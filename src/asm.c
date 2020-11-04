@@ -10,37 +10,68 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "div", len) == 0)  return DIV;
     if (strncmp(code, "sqrt", len) == 0) return SQRT;
     if (strncmp(code, "hlt", len) == 0)  return HLT;
-    if (strncmp(code, "in",len) == 0)         return IN;
-    if (strncmp(code, "out",len) == 0)        return OUT;
+    if (strncmp(code, "in",len) == 0)    return IN;
+    if (strncmp(code, "out",len) == 0)   return OUT;
     return INVALID_OP_ERROR;
 }
 
+byte getRegistersByMnemonic(const char* code, size_t len){
+    assert(code != NULL);
+    if (strncmp(code, "rax", len) == 0) return RAX;
+    return INVALID_REG_ERROR;
+}
 
 int writeTokenToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file) {
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
+    byte rgCode;
     if (opCode != INVALID_OP_ERROR) {
-        if (opCode == PUSH) {
-            //TODO add registers
-            getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
-            double number;
-            if (getDoubleNumber(*mnemonicBegin, &number)) {
-                checkType isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
-                assert(isCorrectWrite == 1);
-                isCorrectWrite = fwrite(&number, sizeof(number), 1, file);
-                assert(isCorrectWrite == 1);
-                return EXIT_SUCCESS;
-            } else {
-                fprintf(stderr, "Something went wrong with push!\n");
-                exit(EXIT_FAILURE);
-            }
-        } else{
-            checkType isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
-            assert(isCorrectWrite == 1);
-            return EXIT_SUCCESS;
+        checkType isCorrectWrite;
+        switch (opCode) {
+            case PUSH:
+                getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
+                double number;
+                if (getDoubleNumber(*mnemonicBegin, &number)) {
+                    checkType isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
+                    assert(isCorrectWrite == 1);
+                    isCorrectWrite = fwrite(&number, sizeof(number), 1, file);
+                    assert(isCorrectWrite == 1);
+                    return EXIT_SUCCESS;
+                } else {
+                    lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
+                    rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
+                    if (rgCode != INVALID_REG_ERROR) {
+                        if (writeToFileTWOValues(PUSHR, rgCode, file) != EXIT_SUCCESS) {
+                            fprintf(stderr, "Something went wrong with writing pop!\n");
+                            exit(EXIT_FAILURE);
+                        }
+                        return EXIT_SUCCESS;
+                    }
+                    fprintf(stderr, "Something went wrong with push!\n");
+                    fprintf(stderr, "or error when parsing double value!\n");
+                    exit(EXIT_FAILURE);
+                    case POP:
+                        if (strncmp((const char *) mnemonicEnd, "\n", 1) != 0) {//means that is register
+                            getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
+                            lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
+                            rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
+                            if (rgCode != INVALID_REG_ERROR) {
+                                if (writeToFileTWOValues(POPR, rgCode, file) != EXIT_SUCCESS) {
+                                    fprintf(stderr, "Something went wrong with writing pop!\n");
+                                    exit(EXIT_FAILURE);
+                                }
+                                return EXIT_SUCCESS;
+                            }
+                            fprintf(stderr, "Something went wrong with pop!\n");
+                            exit(EXIT_FAILURE);
+                        }//if just pop
+                    default:
+                        isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
+                        assert(isCorrectWrite == 1);
+                        return EXIT_SUCCESS;
+                }
         }
-    } else{
-
+    }else{
         fprintf(stderr, "Can't identify the current instruction! mnemonic = %s\n", *mnemonicBegin);
         exit(EXIT_FAILURE);
     }
@@ -101,10 +132,22 @@ bool getDoubleNumber(char* mnemonicStart, double* number) {
     //cast string to double
     *number = strtod(mnemonicStart, &endPtr);
     if (endPtr == mnemonicStart) {
-        fprintf(stderr, "Error when parsing double value\n");
         return false;
     }
     return true;
+}
+int writeToFileTWOValues(byte opCode, byte rgCode, FILE* file){
+    checkType isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
+    if(isCorrectWrite != 1){
+        fprintf(stderr, "Can't write opCode to file!\n");
+        return EXIT_FAILURE;
+    }
+    isCorrectWrite = fwrite(&rgCode, sizeof(byte), 1, file);
+    if(isCorrectWrite != 1){
+        fprintf(stderr, "Can't write rgCode to file!\n");
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 }
 
 int main(int argc, char** argv) {

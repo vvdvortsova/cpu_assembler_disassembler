@@ -3,7 +3,6 @@
 
 int initCPU(CPU* cpu) {
     StackConstructor_double(cpu->stack,20);
-    //TODO: add regs
     return EXIT_SUCCESS;
 }
 
@@ -23,6 +22,37 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
         double arg1 = 0;
         double arg2 = 0;
         switch(byteCodes[i]){
+            case PUSHR:
+                cpu->currentOp = PUSHR;
+                i++;
+                code = getStringOfOpCode(byteCodes[i]);
+                if(code == NULL) {
+                    fprintf(stderr,"Unexpected instruction!\n");
+                    exit(EXIT_FAILURE);
+                }
+                switch (byteCodes[i]){
+                    case RAX:
+                        StackPush_double(cpu->stack, cpu->rax);
+                        i++;
+                        break;
+                }
+                break;
+            case POPR:
+                cpu->currentOp = POPR;
+                i++;
+                code = getStringOfOpCode(byteCodes[i]);
+                if(code == NULL) {
+                    fprintf(stderr,"Unexpected instruction!\n");
+                    exit(EXIT_FAILURE);
+                }
+                switch (byteCodes[i]){
+                    case RAX:
+                        arg1 = StackPop_double(cpu->stack);
+                        cpu->rax = arg1;
+                        i++;
+                        break;
+                }
+                break;
             case PUSH:
                 cpu->currentOp = PUSH;
                 i++;
@@ -130,7 +160,7 @@ int main(int argc, char** argv) {
 
 }
 
-double getDoubleFromInput(char message[]){
+double getDoubleFromInput(char message[]) {
     double number;
     printf("%s", message);
     int correctInput = scanf("%lg", &number);

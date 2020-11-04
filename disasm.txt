@@ -1,6 +1,7 @@
 push 78
-push 78
+push rax
 div
+pop rax
 push 2
 sub
 out

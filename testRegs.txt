@@ -1,0 +1,7 @@
+push 5
+push 10
+pop rax
+push rax
+mul
+out
+hlt

@@ -6,12 +6,13 @@
 #include "stack_lib/all_possible_stack.h"
 #include "asm_utils.h"
 
-typedef int register_type;
+typedef double register_type;
 
 typedef struct CPU {
     Stack_double* stack;
     register_type currentOp;
-    register_type rax;// result of program
+    register_type rax;
+//    register_type regs[4];//array with registers rax rbx rcx rdx
 }CPU;
 
 

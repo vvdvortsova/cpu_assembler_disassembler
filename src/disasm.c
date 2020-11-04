@@ -16,6 +16,14 @@ void disassemblerToFile(char* byteCodes, size_t size, FILE* file) {
                 i += sizeof(arg);
                 fprintf(file, "%g\n", arg);
                 break;
+            case POPR:
+            case PUSHR:
+                if(writeMnemonicsToFile(code, byteCodes[i + 1], file) != EXIT_FAILURE) {
+                    i += 2;
+                    break;
+                }
+                fprintf(stderr,"Unexpected register or something wrong with file!\n");
+                exit(EXIT_FAILURE);
             default:
                 ++i;
                 fprintf(file,"%s\n",code);
@@ -23,6 +31,22 @@ void disassemblerToFile(char* byteCodes, size_t size, FILE* file) {
         }
     }
 }
+
+int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file){
+    const char* code = NULL;
+    fprintf(file,"%s ", instruction);
+    code = getStringOfOpCode(reg);
+    if(code == NULL){
+        fprintf(stderr,"Unexpected register!\n");
+        exit(EXIT_FAILURE);
+    }
+    fprintf(file, "%s\n", code);
+    return EXIT_SUCCESS;
+}
+
+
+
+
 
 int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics){
     assert(fileWithByteCode != NULL);

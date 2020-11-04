@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(cpu_assembler_disassembler C)
 
 set(CMAKE_C_STANDARD 11)
+add_compile_options(-Wall -Wextra -pedantic -Wfloat-equal -fno-stack-protector)
 
 add_executable(stack_machine
         src/stack_lib/all_possible_stack.h
@@ -13,7 +14,6 @@ add_executable(stack_machine
         src/cpu.h
         src/asm_utils.c
         src/asm_utils.h)
-
 
 add_executable(asm
         src/asm.c

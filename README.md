@@ -3,7 +3,7 @@
 ## Description
 First version of machine stack and assembler / disassembler.\
 Not all commands are supported yet.\
-This version of the stack machine is implemented without registers.
+This version of the stack machine is implemented with register rax.
 
 | Command | Description |
 | --- | --- |
@@ -17,6 +17,8 @@ This version of the stack machine is implemented without registers.
 | in | Waits for input value from the terminal|
 | out | Inputs value from the top of the stack|
 | hlt | Еnds program execution |
+| push rax| Pushes num from register rax to the top of the stack |
+| pop rax| Pops num from the top of the stack and put it to the register rax|
 
 
 

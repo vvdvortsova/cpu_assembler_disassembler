@@ -23,5 +23,6 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics);
  * @param file
  */
 void disassemblerToFile(char* byteCodes, size_t size, FILE* file);
+int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file);
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_DISASM_H

@@ -4,7 +4,6 @@
 #include "asm_utils.h"
 
 
-
 const char* getStringOfOpCode(byte code) {
     switch (code){
         case PUSH: return "push";
@@ -17,11 +16,14 @@ const char* getStringOfOpCode(byte code) {
         case HLT:  return "hlt";
         case IN:   return "in";
         case OUT:  return "out";
+        case RAX:  return "rax";
+        case PUSHR:return "push";
+        case POPR: return "pop";
         default:   return NULL;
     }
 }
 
-char* getBuffer(char* fName, int* size, char* FLAG){
+char* getBuffer(char* fName, int* size, char* FLAG) {
     assert(fName != NULL);
     assert(size != NULL);
     assert(FLAG != NULL);
