@@ -35,6 +35,10 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                         StackPush_double(cpu->stack, cpu->rax);
                         i++;
                         break;
+                    case RBX:
+                        StackPush_double(cpu->stack, cpu->rbx);
+                        i++;
+                        break;
                 }
                 break;
             case POPR:
@@ -49,6 +53,11 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                     case RAX:
                         arg1 = StackPop_double(cpu->stack);
                         cpu->rax = arg1;
+                        i++;
+                        break;
+                    case RBX:
+                        arg1 = StackPop_double(cpu->stack);
+                        cpu->rbx = arg1;
                         i++;
                         break;
                 }

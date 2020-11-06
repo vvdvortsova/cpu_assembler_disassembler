@@ -9,13 +9,12 @@
 #include <stdbool.h>
 #include "asm_utils.h"
 
-
 typedef unsigned long long checkType;
-
 enum ASM_ERRORS{
     INVALID_OP_ERROR = 49,
     INVALID_REG_ERROR = 228
 };
+
 
 
 /**
@@ -28,7 +27,7 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode);
 byte getOpCodeWithStringOfCode(const char* code, size_t len);
 void getNextMnemonic(char** MnemonicStart, char**  mnemonicEnd, const char* endOfFile);
 bool getDoubleNumber(char*  mnemonicStart, double* number);
-int writeTokenToFile(char** mnemonicBegin, char**  mnemonicEnd, char* endOfFile, FILE* file);
+int writeTokenToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags);
 byte getRegistersByMnemonic(const char* code, size_t len);
 int writeToFileTWOValues(byte opCode, byte rgCode, FILE* file);
 #endif //CPU_ASSEMBLER_DISASSEMBLER_ASM_H

@@ -1,11 +1,8 @@
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "asm_utils.h"
 
 
 const char* getStringOfOpCode(byte code) {
-    switch (code){
+    switch (code) {
         case PUSH: return "push";
         case POP:  return "pop";
         case ADD:  return "add";
@@ -17,10 +14,38 @@ const char* getStringOfOpCode(byte code) {
         case IN:   return "in";
         case OUT:  return "out";
         case RAX:  return "rax";
+        case RBX:  return "rbx";
         case PUSHR:return "push";
         case POPR: return "pop";
+        case JMP:  return "jmp";
+        case RET:  return "ret";
+        case F:    return "f";
         default:   return NULL;
     }
+}
+
+void printfVector( vector* v){
+    printf("your vector %p\n",(void*)v);
+    struct tag* a2 = calloc(1, sizeof(struct tag));
+    for (int i = 0; i < v->total; ++i) {
+        a2 = (struct tag*)vectorGet(v, i);
+        printf("pos = %d fname = %s\n", a2->position, a2->name);
+    }
+}
+int findFunctionByAddressInVector(vector* v, int addres, int* index){
+    printf("your vector %p\n",(void*)v);
+    struct tag* a2 = calloc(1, sizeof(struct tag));
+    for (int i = 0; i < v->total; ++i) {
+        a2 = (struct tag*)vectorGet(v, i);
+        printf("pos = %d adr = %d\n",a2->position,addres);
+        if(a2->position == addres){
+            *index = i;
+            printf("true! index = %d\n",*index);
+            return EXIT_SUCCESS;
+        }
+    }
+    *index = -1;
+    return EXIT_FAILURE;
 }
 
 char* getBuffer(char* fName, int* size, char* FLAG) {

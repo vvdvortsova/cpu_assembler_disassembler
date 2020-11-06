@@ -3,8 +3,9 @@
 ## Description
 First version of machine stack and assembler / disassembler.\
 Not all commands are supported yet.\
-This version of the stack machine is implemented with register rax.
-
+This version of the stack machine is implemented with register rax/rbx.\
+Update: there are jmp in assembler and disassembler!!!!!first version without clean up!))\
+I tried so long! and created it MTFK!!
 | Command | Description |
 | --- | --- |
 | push num| Pushes num to the top of the stack |
@@ -19,9 +20,10 @@ This version of the stack machine is implemented with register rax.
 | hlt | Еnds program execution |
 | push rax| Pushes num from register rax to the top of the stack |
 | pop rax| Pops num from the top of the stack and put it to the register rax|
+| jmp tag| Jump to the follow tag|
 
-
-
+Also, there are vector to help to create assembler and disassembler\
+in vector.c and vector.h
 
 ## Installing
 ```bash

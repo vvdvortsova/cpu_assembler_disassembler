@@ -1,0 +1,11 @@
+pop rax
+in
+jmp f0:
+out
+f0:
+push rax
+ret
+f1:
+jmp f1:
+out
+hlt

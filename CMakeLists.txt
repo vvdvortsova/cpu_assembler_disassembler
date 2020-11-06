@@ -19,13 +19,17 @@ add_executable(asm
         src/asm.c
         src/asm.h
         src/asm_utils.c
-        src/asm_utils.h)
+        src/asm_utils.h
+        src/vector.c
+        src/vector.h)
 
 add_executable(disasm
         src/disasm.c
         src/disasm.h
         src/asm_utils.c
-        src/asm_utils.h)
+        src/asm_utils.h
+        src/vector.c
+        src/vector.h)
 
 target_link_libraries(stack_machine PRIVATE m)
 

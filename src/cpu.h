@@ -12,6 +12,8 @@ typedef struct CPU {
     Stack_double* stack;
     register_type currentOp;
     register_type rax;
+    register_type rbx;
+    size_t returnPoint;
 //    register_type regs[4];//array with registers rax rbx rcx rdx
 }CPU;
 

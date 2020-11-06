@@ -1,7 +1,7 @@
 push 5
 push 10
-pop rax
-push rax
+pop rbx
+push rbx
 mul
 out
 hlt
