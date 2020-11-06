@@ -4,7 +4,7 @@
 First version of machine stack and assembler / disassembler.\
 Not all commands are supported yet.\
 This version of the stack machine is implemented with register rax/rbx.\
-Update: there are jmp in assembler and disassembler!!!!!first version without clean up!))\
+Update: there are jmp in assembler and disassembler!!!!!The first version without clean up!))\
 I tried so long! and created it MTFK!!
 | Command | Description |
 | --- | --- |
