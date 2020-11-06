@@ -1,4 +1,5 @@
 pop rax
+push 10
 in
 jmp f0:
 out

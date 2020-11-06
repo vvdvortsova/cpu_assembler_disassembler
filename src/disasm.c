@@ -89,7 +89,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                 i++;
                 fprintf(file,"%s ", code);
                 arg = *(double*)(byteCodes + i);
-                fprintf(file,"%g", arg);
+                fprintf(file,"%g\n", arg);
                 i += sizeof(arg);
                 break;
             case POPR:
