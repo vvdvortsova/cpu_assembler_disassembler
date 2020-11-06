@@ -1,9 +1,9 @@
 # Stack-Machine
 
 ## Description
-First version of machine stack and assembler / disassembler.\
+The first version of machine stack and assembler / disassembler.\
 Not all commands are supported yet.\
-This version of the stack machine is implemented with register rax/rbx.\
+This version of the stack machine is implemented with registers rax/rbx.\
 Update: there are jmp in assembler and disassembler!!!!!The first version without clean up!))\
 I tried so long! and created it MTFK!!
 | Command | Description |
