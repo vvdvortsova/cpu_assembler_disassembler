@@ -2,10 +2,9 @@
 
 ## Description
 The first version of machine stack and assembler / disassembler.\
-Not all commands are supported yet.\
-This version of the stack machine is implemented with registers rax/rbx.\
-Update: there are jmp in assembler and disassembler!!!!!The first version without clean up!))\
-I tried so long! and created it MTFK!!
+This version of the stack machine is implemented with registers rax/rbx and jmp.\
+Update: jmp work!
+
 | Command | Description |
 | --- | --- |
 | push num| Pushes num to the top of the stack |
@@ -57,6 +56,30 @@ To run disassembler run program with args: argv[1] = binary file for output with
 cmake .
 make
 ./disasm masm disasm.txt
+```
+##EXAMPLES
+Warning: name your must start with "f"\
+like: "fswap", "fmove", "frun" and so on
+
+
+Swap two numbers in stack 
+```bash
+push 10
+push 12
+pop rax
+pop rbx
+jmp f0
+push rax
+push rbx
+out
+out
+f0:
+push rax
+push rbx
+pop rax
+pop rbx
+ret
+hlt
 ```
 
 ## Documentation

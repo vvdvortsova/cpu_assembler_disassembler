@@ -11,121 +11,161 @@ int destructorCPU(CPU* cpu) {
     return EXIT_SUCCESS;
 }
 
+
 int processMachine(char* byteCodes, size_t size, CPU* cpu) {
     for (size_t i = 0; i < size;) {
         double arg = 0;
         char* code = getStringOfOpCode(byteCodes[i]);
         if(code == NULL) {
-            fprintf(stderr,"Unexpected instruction!\n");
+            fprintf(stderr,"Unexpected instruction in start of for!\n");
             exit(EXIT_FAILURE);
         }
         double arg1 = 0;
-        double arg2 = 0;
+        int addressOfFunction = 0;
         switch(byteCodes[i]){
-            case PUSHR:
-                cpu->currentOp = PUSHR;
+            case F:
+                //do not execute instructions after it before ret
+                //after ret cpu->cpuState = simple_state
+                cpu->cpuState = FUNC_STATE;
                 i++;
-                code = getStringOfOpCode(byteCodes[i]);
-                if(code == NULL) {
-                    fprintf(stderr,"Unexpected instruction!\n");
-                    exit(EXIT_FAILURE);
+                break;
+            case JMP:
+                cpu->cpuState = JMP_STATE;
+                i++;
+                //read address
+                //push next address in stack
+                //jump to function to execute it
+                addressOfFunction = *(int*)(byteCodes + i);
+                int returnAddress = i + sizeof(int);//we do not add 1 because i begins with zero
+                StackPush_double(cpu->stack, returnAddress);
+                i = addressOfFunction;//address after "f" byte
+                break;
+            case RET:
+                //look at the top of stack and get address of return point
+                //jump to return point
+                //or if it was func_state than we turn off it
+                if(cpu->cpuState == JMP_STATE){
+                    cpu->cpuState = SIMPLE_STATE;
+                    addressOfFunction = StackPop_double(cpu->stack);
+                    i = addressOfFunction;
+                    break;
+                } else if (cpu->cpuState == FUNC_STATE){
+                    cpu->cpuState = SIMPLE_STATE;
+                    i++;
+                    break;
                 }
-                switch (byteCodes[i]){
-                    case RAX:
-                        StackPush_double(cpu->stack, cpu->rax);
-                        i++;
-                        break;
-                    case RBX:
-                        StackPush_double(cpu->stack, cpu->rbx);
-                        i++;
-                        break;
+                break;
+            case PUSHR:
+                i++;//opCode
+                if(cpu->cpuState != FUNC_STATE){
+                    code = getStringOfOpCode(byteCodes[i]);
+                    if(code == NULL) {
+                        fprintf(stderr,"Unexpected instruction! in push\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    switch (byteCodes[i]) {
+                        case RAX:
+                            StackPush_double(cpu->stack, cpu->rax);
+                            i++;
+                            break;
+                        case RBX:
+                            StackPush_double(cpu->stack, cpu->rbx);
+                            i++;
+                            break;
+                        default:
+                            fprintf(stderr,"Unexpected register after push in binary file: %x !\n", code, byteCodes[i]);
+                            return EXIT_FAILURE;
+                    }
+                    break;
                 }
+                i++;// register
                 break;
             case POPR:
-                cpu->currentOp = POPR;
-                i++;
-                code = getStringOfOpCode(byteCodes[i]);
-                if(code == NULL) {
-                    fprintf(stderr,"Unexpected instruction!\n");
-                    exit(EXIT_FAILURE);
+                i++;//opCode
+                if(cpu->cpuState != FUNC_STATE){
+                    code = getStringOfOpCode(byteCodes[i]);
+                    if(code == NULL) {
+                        fprintf(stderr,"Unexpected instruction in pop!\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    switch (byteCodes[i]){
+                        case RAX:
+                            arg1 = StackPop_double(cpu->stack);
+                            cpu->rax = arg1;
+                            i++;
+                            break;
+                        case RBX:
+                            arg1 = StackPop_double(cpu->stack);
+                            cpu->rbx = arg1;
+                            i++;
+                            break;
+                        default:
+                            fprintf(stderr,"Unexpected register after pop in binary file: %x !\n", code, byteCodes[i]);
+                            return EXIT_FAILURE;
+                    }
+                    break;
                 }
-                switch (byteCodes[i]){
-                    case RAX:
-                        arg1 = StackPop_double(cpu->stack);
-                        cpu->rax = arg1;
-                        i++;
-                        break;
-                    case RBX:
-                        arg1 = StackPop_double(cpu->stack);
-                        cpu->rbx = arg1;
-                        i++;
-                        break;
-                }
+                i++;//register
                 break;
             case PUSH:
-                cpu->currentOp = PUSH;
-                i++;
+                i++;//opCode
                 arg = *(double*)(byteCodes + i);
-                StackPush_double(cpu->stack,arg);
-                i += sizeof(arg);
+                if(cpu->cpuState != FUNC_STATE){
+                    StackPush_double(cpu->stack,arg);
+                }
+                i += sizeof(arg);//number
                 break;
             case ADD:
-                ++i;
-                cpu->currentOp = ADD;
-                arg1 = StackPop_double(cpu->stack);
-                arg2 = StackPop_double(cpu->stack);
-                StackPush_double(cpu->stack, (arg1 + arg2));
-                break;
             case SUB:
-                ++i;
-                cpu->currentOp = SUB;
-                arg1 = StackPop_double(cpu->stack);
-                arg2 = StackPop_double(cpu->stack);
-                StackPush_double(cpu->stack, (arg1 - arg2));
-                break;
-            case MUL:
-                ++i;
-                cpu->currentOp = MUL;
-                arg1 = StackPop_double(cpu->stack);
-                arg2 = StackPop_double(cpu->stack);
-                StackPush_double(cpu->stack, (arg1 * arg2));
-                break;
             case DIV:
-                ++i;
-                cpu->currentOp = DIV;
-                arg1 = StackPop_double(cpu->stack);
-                arg2 = StackPop_double(cpu->stack);
-                if(arg2 == 0){
-                    fprintf(stderr,"Division by zero! %g / %g\n", arg1, arg2);
-                    return EXIT_FAILURE;
+            case MUL:
+                if(cpu->cpuState != FUNC_STATE){
+                    if(binaryOp(cpu->stack, byteCodes[i]) == EXIT_FAILURE){
+                        fprintf(stderr,"Unexpected command: %s in binary file: %x !\n", code, byteCodes[i]);
+                        return EXIT_FAILURE;
+                    }
                 }
-                StackPush_double(cpu->stack, (arg1 / arg2));
+                i++;
+                break;
+            case POP:
+                if(cpu->cpuState != FUNC_STATE) {
+                    StackPop_double(cpu->stack);
+                }
+                i++;
                 break;
             case SQRT:
                 ++i;
-                cpu->currentOp = SQRT;
-                arg1 = StackPop_double(cpu->stack);
-                if(arg1 < 0){
-                    fprintf(stderr,"Sqrt from negative number! %g\n", arg1);
-                    return EXIT_FAILURE;
+                if(cpu->cpuState != FUNC_STATE) {
+                    arg1 = StackPop_double(cpu->stack);
+                    if(arg1 < 0){
+                        fprintf(stderr,"Sqrt from negative number! %g\n", arg1);
+                        return EXIT_FAILURE;
+                    }
+                    double res = sqrt(arg1);
+                    StackPush_double(cpu->stack, res);
                 }
-                double res = sqrt(arg1);
-                StackPush_double(cpu->stack, res);
                 break;
             case OUT:
                 ++i;
-                cpu->currentOp = OUT;
-                arg1 = StackPop_double(cpu->stack);
-                printf("Result = %g\n",arg1);
+                if(cpu->cpuState != FUNC_STATE) {
+                    arg1 = StackPop_double(cpu->stack);
+                    printf("Result = %g\n",arg1);
+                    break;
+                }
                 break;
             case IN:
                 ++i;
-                cpu->currentOp = IN;
-                arg1 = getDoubleFromInput("Input value pls: ");
-                StackPush_double(cpu->stack, arg1);
+                if(cpu->cpuState != FUNC_STATE) {
+                    arg1 = getDoubleFromInput("Input value pls: ");
+                    StackPush_double(cpu->stack, arg1);
+                    break;
+                }
                 break;
             case HLT:
-                cpu->currentOp = HLT;
+                if(cpu->cpuState != FUNC_STATE) {
+                    printf("The program has finished executing in function!\n");
+                    return EXIT_SUCCESS;
+                }
                 printf("The program has finished executing!\n");
                 return EXIT_SUCCESS;
             default:
@@ -134,6 +174,37 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
 
         }
     }
+    return EXIT_SUCCESS;
+}
+
+int binaryOp(Stack_double* stack, byte code){
+    double arg1 = 0;
+    double arg2 = 0;
+    arg1 = StackPop_double(stack);
+    arg2 = StackPop_double(stack);
+
+    switch(code){
+        case ADD:
+            StackPush_double(stack, (arg1 + arg2));
+            break;
+        case SUB:
+            StackPush_double(stack, (arg1 - arg2));
+            break;
+        case MUL:
+            StackPush_double(stack, (arg1 * arg2));
+            break;
+        case DIV:
+            if(arg2 == 0){
+                fprintf(stderr,"Division by zero! %g / %g\n", arg1, arg2);
+                return EXIT_FAILURE;
+            }
+            StackPush_double(stack, (arg1 / arg2));
+            break;
+        default:
+            fprintf(stderr,"Unexpected command: %x in binary file!\n", code);
+            return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 
 }
 
@@ -150,6 +221,7 @@ int countResult(char* fileName) {
         fprintf(stderr,"Because of the lack of HLT command at the end of binary file!\n");
         return EXIT_FAILURE;
     }
+    cpu.cpuState = SIMPLE_STATE;
     if(processMachine(byteCodes, size, &cpu) != EXIT_SUCCESS){
         fprintf(stderr,"The program has not finished executing!\n");
         return EXIT_FAILURE;

@@ -8,12 +8,17 @@
 
 typedef double register_type;
 
+typedef enum STATE{
+    SIMPLE_STATE,
+    JMP_STATE,
+    FUNC_STATE
+} state;
+
 typedef struct CPU {
     Stack_double* stack;
-    register_type currentOp;
     register_type rax;
     register_type rbx;
-    size_t returnPoint;
+    state cpuState;
 //    register_type regs[4];//array with registers rax rbx rcx rdx
 }CPU;
 
@@ -32,5 +37,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu);
 * @return     number     double value
 */
 double getDoubleFromInput(char message[]);
+int binaryOp(Stack_double* stack, byte code);
+
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_CPU_H

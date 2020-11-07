@@ -13,7 +13,9 @@ add_executable(stack_machine
         src/cpu.c
         src/cpu.h
         src/asm_utils.c
-        src/asm_utils.h)
+        src/asm_utils.h
+        src/vector.c
+        src/vector.h)
 
 add_executable(asm
         src/asm.c
