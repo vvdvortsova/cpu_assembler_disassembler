@@ -78,7 +78,10 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                 if(findFunctionByAddressInVector(tags, funcArg, &index) == EXIT_SUCCESS) {
                     printf("in jmp %d\n", i);
                     struct tag* elem = (struct tag*)vectorGet(tags, index);
-                    fprintf(file,"%s", elem->name);
+                    char copy[90];
+                    strcpy(copy, elem->name);
+                    copy[strlen(copy) - 2] = '\0';
+                    fprintf(file,"%s\n", copy);
                 } else{
                     fprintf(stderr,"Can't find func name!:(\n");
                     printfVector(tags);

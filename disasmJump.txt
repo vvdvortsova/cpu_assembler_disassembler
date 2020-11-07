@@ -1,12 +1,16 @@
-pop rax
+push 12
 push 10
-in
-jmp f0:
+pop rax
+pop rbx
+jmp f0
+push rax
+push rbx
+out
 out
 f0:
 push rax
+push rbx
+pop rax
+pop rbx
 ret
-f1:
-jmp f1:
-out
 hlt
