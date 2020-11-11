@@ -69,6 +69,12 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                     fprintf(file,"%s", elem->name);
                 }
                 break;
+            case JE:
+            case JNE:
+            case JL:
+            case JLE:
+            case JG:
+            case JGE:
             case JMP:
             case CALL:
                 printf("jmp %d\n", i);
@@ -147,6 +153,12 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                     vectorAdd(tags, temp);
                 }
                 break;
+            case JE:
+            case JNE:
+            case JL:
+            case JLE:
+            case JG:
+            case JGE:
             case JMP:
             case CALL:
                 printf("jmp %d\n", i);

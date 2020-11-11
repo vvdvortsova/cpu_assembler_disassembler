@@ -32,6 +32,12 @@ typedef unsigned char byte;
 #define RET   0b00100011u
 #define F     0b00100100u
 #define JMP   0b00100101u
+#define JE    0b00100111u
+#define JNE   0b00101000u
+#define JL    0b00101001u
+#define JLE   0b00101010u
+#define JG    0b00101011u
+#define JGE   0b00101100u
 
 
 

@@ -1,6 +1,5 @@
 #include "asm_utils.h"
 
-
 const char* getStringOfOpCode(byte code) {
     switch (code) {
         case PUSH: return "push";
@@ -17,10 +16,16 @@ const char* getStringOfOpCode(byte code) {
         case RBX:  return "rbx";
         case PUSHR:return "push";
         case POPR: return "pop";
-        case CALL:  return "call";
+        case CALL: return "call";
         case RET:  return "ret";
         case F:    return "f";
-        case JMP:    return "jmp";
+        case JMP:  return "jmp";
+        case JE:   return "je";
+        case JNE:   return "jne";
+        case JL:   return "jl";
+        case JLE:   return "jle";
+        case JG:   return "jg";
+        case JGE:   return "jge";
         default:   return NULL;
     }
 }

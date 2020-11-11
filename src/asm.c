@@ -13,9 +13,15 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "in",len) == 0)    return IN;
     if (strncmp(code, "out",len) == 0)   return OUT;
     if (strncmp(code, "ret",len) == 0)   return RET;
-    if (strncmp(code, "call",len) == 0)   return CALL;
+    if (strncmp(code, "call",len) == 0)  return CALL;
     if (strncmp(code, "f",len) == 0)     return F;
-    if (strncmp(code, "jmp",len) == 0)     return JMP;
+    if (strncmp(code, "jmp",len) == 0)   return JMP;
+    if (strncmp(code, "je",len) == 0)    return JE;
+    if (strncmp(code, "jne",len) == 0)   return JNE;
+    if (strncmp(code, "jl",len) == 0)    return JL;
+    if (strncmp(code, "jle",len) == 0)   return JLE;
+    if (strncmp(code, "jg",len) == 0)    return JG;
+    if (strncmp(code, "jge",len) == 0)   return JGE;
     return INVALID_OP_ERROR;
 }
 
@@ -144,6 +150,12 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                     fprintf(stderr, "or error when parsing double value!\n");
                     exit(EXIT_FAILURE);
                 }
+            case JE:
+            case JNE:
+            case JL:
+            case JLE:
+            case JG:
+            case JGE:
             case JMP:
             case CALL:
                 *countsOfBytes += sizeof(byte);//opCode
@@ -237,6 +249,12 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                     fprintf(stderr, "or error when parsing double value!\n");
                     exit(EXIT_FAILURE);
                 }
+            case JE:
+            case JNE:
+            case JL:
+            case JLE:
+            case JG:
+            case JGE:
             case JMP:
             case CALL:
                 isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);//write opCode

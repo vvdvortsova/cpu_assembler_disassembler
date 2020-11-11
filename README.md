@@ -28,6 +28,17 @@ Update: jmp work!
 Also, there are vector to help to create assembler and disassembler\
 in vector.c and vector.h
 
+## Conditional jump
+| Command | Condition | 
+| --- | --- | 
+| je tag| op1 == op2 | 
+| jne tag| op1 != op2 | 
+| jl tag| op1 < op2 |  
+| jle tag| op1 <= op2 |  
+| jg tag| op1 > op2 |  
+| jge tag| op1 >= op2 |  
+
+
 ## Installing
 ```bash
 git clone https://github.com/vvdvortsova/cpu_assembler_diassembler.git
@@ -61,7 +72,7 @@ cmake .
 make
 ./disasm masm disasm.txt
 ```
-##EXAMPLES
+## EXAMPLES
 Warning: name your must start with "f"\
 like: "fswap", "fmove", "frun" and so on
 
@@ -72,7 +83,7 @@ push 10
 push 12
 pop rax
 pop rbx
-jmp f0
+call f0
 push rax
 push rbx
 out
