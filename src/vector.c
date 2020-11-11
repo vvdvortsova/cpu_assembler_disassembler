@@ -1,3 +1,7 @@
+/**
+* @file         vector.c
+* @include      "vector.h"
+*/
 #include "vector.h"
 
 void vectorInit(vector* v) {

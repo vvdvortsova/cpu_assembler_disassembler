@@ -36,6 +36,23 @@ add_executable(
         src/vector.c
         src/vector.h)
 
+#add_executable(
+#        tests
+#        src/disasm.c
+#        src/disasm.h
+#        src/asm_utils.c
+#        src/asm_utils.h
+#        src/asm.c
+#        src/asm.h
+#        src/vector.c
+#        src/vector.h
+#        src/stack_lib/stack.h
+#        src/stack_lib/stack_errors.c
+#        src/stack_lib/stack_errors.h
+#        src/stack_lib/templates.h
+#        src/cpu.c
+#        src/cpu.h)
+
 target_link_libraries(stack_machine PRIVATE m)
 
 set(RESOURCE_FILES

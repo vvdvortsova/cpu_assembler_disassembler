@@ -1,3 +1,9 @@
+/**
+* @file         asm_utils.c
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      "asm_utils.h"
+*/
 #include "asm_utils.h"
 
 const char* getStringOfOpCode(byte code) {

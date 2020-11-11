@@ -1,3 +1,9 @@
+/**
+* @file         disasm.h
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      assert.h, stdlib.h, stdio.h, stdbool.h, "stack_lib/all_possible_stack.h", "asm_utils.h"
+*/
 #ifndef CPU_ASSEMBLER_DISASSEMBLER_DISASM_H
 #define CPU_ASSEMBLER_DISASSEMBLER_DISASM_H
 #include <assert.h>
@@ -23,7 +29,6 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics);
  * @param size
  * @param file
  */
-void disassemblerToFile(char* byteCodes, size_t size, FILE* file);
 int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file);
 void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int* countOfFunction, int* countOfBytes);
 void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FILE* file, int* countOfBytes);

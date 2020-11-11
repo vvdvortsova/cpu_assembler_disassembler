@@ -1,3 +1,9 @@
+/**
+* @file         asm.h
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      stdio.h, stdlib.h, assert.h, string.h, ctype.h, stdbool.h, "asm_utils.h"
+*/
 #ifndef CPU_ASSEMBLER_DISASSEMBLER_ASM_H
 #define CPU_ASSEMBLER_DISASSEMBLER_ASM_H
 

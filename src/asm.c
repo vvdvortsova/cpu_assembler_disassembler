@@ -1,3 +1,9 @@
+/**
+* @file         asm.c
+* @brief        Definitions of methods for asm
+* @author       Dvortsova Varvara BSE182 HSE
+* @include
+*/
 #include "asm.h"
 
 byte getOpCodeWithStringOfCode(const char* code, size_t len) {

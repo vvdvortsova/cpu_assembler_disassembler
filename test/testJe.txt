@@ -1,16 +1,5 @@
-push 3
-push 3
-je tb
-fm:
-in
-out
-ret
-tb:
+tLoop:
 push 3
 out
-call fm
-push -2
-push -3
-add
-out
+jmp tLoop
 hlt

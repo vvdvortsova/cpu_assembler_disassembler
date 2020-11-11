@@ -3,7 +3,10 @@
 ## Description
 The first version of machine stack and assembler / disassembler.\
 This version of the stack machine is implemented with registers rax/rbx and jmp.\
-Update: jmp work!
+Update: jmp work!\
+Update: call work!\
+Update: jxx work!
+
 
 | Command | Description |
 | --- | --- |
@@ -78,6 +81,8 @@ like: "fswap", "fmove", "frun" and so on
 Warning: name of your tag(метка) must start with "t"\
 like: "tswap", "tmove", "trun" and so on
 
+To see more examples search in test\
+
 Swap two numbers in stack 
 ```bash
 push 10
@@ -98,6 +103,42 @@ ret
 hlt
 ```
 
+Infinity loop
+```bash
+tloop:
+push 2
+out
+jmp tloop
+hlt
+```
+
+Using vector
+```bash
+
+struct M{
+    char* a;
+    double b;
+};
+
+int main(void) {
+    vector *v = calloc(1, sizeof(vector));
+    struct M* a1 = calloc(1, sizeof(struct M));
+    struct M* a3 = calloc(1, sizeof(struct M));
+    a1->a = "awdwa";
+    a1->b = 9;
+    char mam[90] = "";
+    vectorAdd(v, a1);
+    struct M* a2 = (struct M* )vectorGet(v, 0);
+    strcpy(mam, a2->a)
+    printf("copy a  = %s\n",mam);
+    printf("a2->a = %s\n",a2->a);
+
+    free(v);
+    free(a3);
+    free(a2);
+    free(a1);
+}
+```
 ## Documentation
 You can watch documentation by opening
 ```docs/html/index.html ``` in browser.

@@ -1,0 +1,5 @@
+t0:
+push 2
+out
+jmp t0
+hlt

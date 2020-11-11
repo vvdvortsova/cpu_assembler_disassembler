@@ -1,10 +1,18 @@
+/**
+* @file         cpu.h
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      assert.h, stdbool.h, math.h, "stack_lib/all_possible_stack.h", "asm_utils.h"
+*/
 #ifndef CPU_ASSEMBLER_DISASSEMBLER_CPU_H
 #define CPU_ASSEMBLER_DISASSEMBLER_CPU_H
 
 #include <math.h>
 #include <assert.h>
+#include <stdbool.h>
 #include "stack_lib/all_possible_stack.h"
 #include "asm_utils.h"
+
 
 #define EPS 1e-9
 typedef double register_type;
@@ -40,6 +48,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu);
 */
 double getDoubleFromInput(char message[]);
 int binaryOp(Stack_double* stack, byte code);
+int conditionOp(Stack_double* stack, byte code);
 
 /**
  * The following definitions are from "The art of computer programming" by Knuth

@@ -1,3 +1,9 @@
+/**
+* @file         asm_utils.h
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      stdio.h, stdlib.h, assert.h, "vector.h"
+*/
 #ifndef CPU_ASSEMBLER_DISASSEMBLER_ASM_UTILS_H
 #define CPU_ASSEMBLER_DISASSEMBLER_ASM_UTILS_H
 #include <assert.h>

@@ -1,3 +1,9 @@
+/**
+* @file         disasm.c
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      "disasm.h"
+*/
 #include "disasm.h"
 
 

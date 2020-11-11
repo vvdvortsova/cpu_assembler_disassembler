@@ -1,8 +1,10 @@
-#include <stdbool.h>
+/**
+* @file         cpu.c
+* @brief
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      "cpu.h"
+*/
 #include "cpu.h"
-
-int conditionOp(Stack_double* stack, byte code);
-int compareDouble(double arg1, double arg2);
 
 int initCPU(CPU* cpu) {
     StackConstructor_double(cpu->stack,20);

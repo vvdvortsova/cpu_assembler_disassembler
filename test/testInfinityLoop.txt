@@ -1,0 +1,5 @@
+tloop:
+push 2
+out
+jmp tloop
+hlt
