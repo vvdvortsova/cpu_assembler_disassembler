@@ -73,9 +73,10 @@ make
 ./disasm masm disasm.txt
 ```
 ## EXAMPLES
-Warning: name your must start with "f"\
+Warning: name of your function must start with "f"\
 like: "fswap", "fmove", "frun" and so on
-
+Warning: name of your tag(метка) must start with "t"\
+like: "tswap", "tmove", "trun" and so on
 
 Swap two numbers in stack 
 ```bash

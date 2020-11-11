@@ -38,6 +38,8 @@ typedef unsigned char byte;
 #define JLE   0b00101010u
 #define JG    0b00101011u
 #define JGE   0b00101100u
+#define TAG   0b00101101u
+
 
 
 

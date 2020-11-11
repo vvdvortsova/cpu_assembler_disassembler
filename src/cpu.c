@@ -1,13 +1,18 @@
+#include <stdbool.h>
 #include "cpu.h"
 
+int conditionOp(Stack_double* stack, byte code);
+int compareDouble(double arg1, double arg2);
 
 int initCPU(CPU* cpu) {
     StackConstructor_double(cpu->stack,20);
+    StackConstructor_double(cpu->returnStack,5);
     return EXIT_SUCCESS;
 }
 
 int destructorCPU(CPU* cpu) {
     StackDestructor_double(cpu->stack);
+    StackDestructor_double(cpu->returnStack);
     return EXIT_SUCCESS;
 }
 
@@ -23,38 +28,56 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
         double arg1 = 0;
         int addressOfFunction = 0;
         switch(byteCodes[i]){
+            case TAG:
+                i++;
+                break;
             case F:
                 //do not execute instructions after it before ret
                 //after ret cpu->cpuState = simple_state
                 cpu->cpuState = FUNC_STATE;
                 i++;
                 break;
+            case JE:
+            case JNE:
+            case JL:
+            case JLE:
+            case JG:
+            case JGE:
+                if(conditionOp(cpu->stack, byteCodes[i]) == EXIT_SUCCESS)
+                {
+                    i++;
+                    addressOfFunction = *(int*)(byteCodes + i);
+                    i = addressOfFunction;//address after "f" byte
+                    break;
+                }
+                i += sizeof(int);//address
+                i++;//next opCode
+                break;
             case JMP:
                 //just jump
                 //and we do not remember the return address
-//                cpu->cpuState = JMP_STATE;
                 i++;
                 addressOfFunction = *(int*)(byteCodes + i);
                 i = addressOfFunction;//address after "f" byte
                 break;
             case CALL:
-                cpu->cpuState = JMP_STATE;
+                cpu->cpuState = CALL_STATE;
                 i++;
                 //read address
                 //push next address in stack
                 //jump to function to execute it
                 addressOfFunction = *(int*)(byteCodes + i);
                 int returnAddress = i + sizeof(int);//we do not add 1 because i begins with zero
-                StackPush_double(cpu->stack, returnAddress);
+                StackPush_double(cpu->returnStack, returnAddress);
                 i = addressOfFunction;//address after "f" byte
                 break;
             case RET:
                 //look at the top of stack and get address of return point
                 //jump to return point
                 //or if it was func_state than we turn off it
-                if(cpu->cpuState == JMP_STATE){
+                if(cpu->cpuState == CALL_STATE){
                     cpu->cpuState = SIMPLE_STATE;
-                    addressOfFunction = StackPop_double(cpu->stack);
+                    addressOfFunction = StackPop_double(cpu->returnStack);
                     i = addressOfFunction;
                     break;
                 } else if (cpu->cpuState == FUNC_STATE){
@@ -216,12 +239,77 @@ int binaryOp(Stack_double* stack, byte code){
 
 }
 
+int conditionOp(Stack_double* stack, byte code){
+    double arg1 = 0;
+    double arg2 = 0;
+    arg1 = StackPop_double(stack);
+    arg2 = StackPop_double(stack);
+    bool isOK = false;
+
+    switch(code){
+        case JE:
+            if(areEqual(arg1, arg2, EPS))
+                isOK = true;
+            break;
+        case JNE:
+            if(!areEqual(arg1, arg2, EPS))
+                isOK = true;
+            break;
+        case JL:
+            if(!definitelyLessThan(arg1, arg2, EPS))
+                isOK = true;
+            break;
+        case JLE:
+            if(!approximatelyEqual(arg1, arg2, EPS))
+                isOK = true;
+            break;
+        case JG:
+            if(!definitelyGreaterThan(arg1, arg2, EPS))
+                isOK = true;
+            break;
+        case JGE:
+            if(!essentiallyEqual(arg1, arg2, EPS))
+                isOK = true;
+            break;
+        default:
+            fprintf(stderr,"Unexpected command: %x in binary file!\n", code);
+            return EXIT_FAILURE;
+    }
+    StackPush_double(stack, arg1);
+    StackPush_double(stack, arg2);
+    if(isOK){
+        return EXIT_SUCCESS;
+    }
+    return EXIT_FAILURE;
+}
+
+bool approximatelyEqual(double a, double b, double epsilon) {
+    return fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+bool essentiallyEqual(double a, double b, double epsilon) {
+    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+bool definitelyGreaterThan(double a, double b, double epsilon) {
+    return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+bool definitelyLessThan(double a, double b, double epsilon) {
+    return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+bool areEqual(double a, double b, double epsilon) {
+    return fabs(a - b) < epsilon;
+}
+
 int countResult(char* fileName) {
     assert(fileName != NULL);
     int size = 0;
     char* byteCodes = getBuffer(fileName, &size, "rb");
     Stack_double stack;
-    CPU cpu = { &stack, 0, 0};
+    Stack_double returnStack;
+    CPU cpu = {&stack, &returnStack, 0, 0};
     initCPU(&cpu);
 
     if(byteCodes[size-1] != HLT){

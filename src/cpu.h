@@ -6,16 +6,18 @@
 #include "stack_lib/all_possible_stack.h"
 #include "asm_utils.h"
 
+#define EPS 1e-9
 typedef double register_type;
 
 typedef enum STATE{
     SIMPLE_STATE,
-    JMP_STATE,
+    CALL_STATE,
     FUNC_STATE
 } state;
 
 typedef struct CPU {
     Stack_double* stack;
+    Stack_double* returnStack;
     register_type rax;
     register_type rbx;
     state cpuState;
@@ -39,5 +41,17 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu);
 double getDoubleFromInput(char message[]);
 int binaryOp(Stack_double* stack, byte code);
 
+/**
+ * The following definitions are from "The art of computer programming" by Knuth
+ * @param a
+ * @param b
+ * @param epsilon
+ * @return
+ */
+bool approximatelyEqual(double a, double b, double epsilon);
+bool essentiallyEqual(double a, double b, double epsilon);
+bool definitelyGreaterThan(double a, double b, double epsilon);
+bool definitelyLessThan(double a, double b, double epsilon);
+bool areEqual(double a, double b, double epsilon);
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_CPU_H

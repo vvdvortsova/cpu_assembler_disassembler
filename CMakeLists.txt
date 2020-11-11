@@ -4,7 +4,8 @@ project(cpu_assembler_disassembler C)
 set(CMAKE_C_STANDARD 11)
 add_compile_options(-Wall -Wextra -pedantic -Wfloat-equal -fno-stack-protector)
 
-add_executable(stack_machine
+add_executable(
+        stack_machine
         src/stack_lib/all_possible_stack.h
         src/stack_lib/stack.h
         src/stack_lib/stack_errors.c
@@ -17,7 +18,8 @@ add_executable(stack_machine
         src/vector.c
         src/vector.h)
 
-add_executable(asm
+add_executable(
+        asm
         src/asm.c
         src/asm.h
         src/asm_utils.c
@@ -25,7 +27,8 @@ add_executable(asm
         src/vector.c
         src/vector.h)
 
-add_executable(disasm
+add_executable(
+        disasm
         src/disasm.c
         src/disasm.h
         src/asm_utils.c
@@ -36,4 +39,4 @@ add_executable(disasm
 target_link_libraries(stack_machine PRIVATE m)
 
 set(RESOURCE_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/asm.txt)
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/)

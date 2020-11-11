@@ -1,8 +1,8 @@
-push 12
 push 10
+push 12
 pop rax
 pop rbx
-jmp f0
+call f0
 push rax
 push rbx
 out

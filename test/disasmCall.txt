@@ -1,0 +1,15 @@
+push 2
+jmp t0
+f1:
+in
+out
+ret
+t0:
+push 3
+out
+call f1
+push -2
+push -3
+add
+out
+hlt

@@ -21,11 +21,12 @@ const char* getStringOfOpCode(byte code) {
         case F:    return "f";
         case JMP:  return "jmp";
         case JE:   return "je";
-        case JNE:   return "jne";
+        case JNE:  return "jne";
         case JL:   return "jl";
-        case JLE:   return "jle";
+        case JLE:  return "jle";
         case JG:   return "jg";
-        case JGE:   return "jge";
+        case JGE:  return "jge";
+        case TAG:  return "t";
         default:   return NULL;
     }
 }

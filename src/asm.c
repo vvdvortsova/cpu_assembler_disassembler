@@ -22,6 +22,7 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "jle",len) == 0)   return JLE;
     if (strncmp(code, "jg",len) == 0)    return JG;
     if (strncmp(code, "jge",len) == 0)   return JGE;
+    if (strncmp(code, "t",len) == 0)     return TAG;
     return INVALID_OP_ERROR;
 }
 
@@ -186,7 +187,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 return EXIT_SUCCESS;
         }
     }else{
-        if(strncmp(mnemonicBegin[0],"f",1) == 0){//TODO
+        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0){//TODO
             lenOfMnemonic = (*mnemonicEnd - *mnemonicBegin);
             //this is tag
             //TODO
@@ -326,7 +327,7 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 return EXIT_SUCCESS;
         }
     }else{
-        if(strncmp(mnemonicBegin[0],"f",1) == 0){//TODO
+        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0){//TODO
             //write code
             lenOfMnemonic = (*mnemonicEnd - *mnemonicBegin);
             char *temp = calloc(1, sizeof(temp));
@@ -340,8 +341,8 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 if (strncmp(temp, tempElem, lenOfMnemonic - 1) == 0) {
                     //там где описание фукции мы храним букву f и так для каждой фукции
                     //а рядом с jmp храним количество байт, где находится описание функции)))
-                    //в disasm соответственно названия свои:(, либо умереть над этой лабой, я правда стараюсь!
-                    byte pos = getOpCodeWithStringOfCode("f",1);
+                    //в disasm соответственно названия свои:(
+                    byte pos = getOpCodeWithStringOfCode(&tempElem[0],1);
                     isCorrectWrite = fwrite(&pos, sizeof(byte), 1, file);
                     assert(isCorrectWrite == 1);
                     countsOfBytes -= sizeof(byte);//opCode of f

@@ -1,0 +1,15 @@
+push 2
+jmp tb
+fm:
+in
+out
+ret
+tb:
+push 3
+out
+call fm
+push -2
+push -3
+add
+out
+hlt

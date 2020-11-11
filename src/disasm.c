@@ -59,6 +59,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
             continue;
         }
         switch(byteCodes[i]) {
+            case TAG:
             case F:
                 index = 0;
                 i++;// because of i start from zero
@@ -130,6 +131,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
  */
 void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int* countOfFunction, int* countOfBytes){
     int i = 0;
+    int callPos = 0;
     for (i = 0; i < size;) {
         double arg = 0;
         byte funcArg = 0;
@@ -140,7 +142,9 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             continue;
         }
         switch(byteCodes[i]) {
+            case TAG:
             case F:
+                callPos = i;
                 i++;// because of i start from zero
                 printf("f %d\n", i);
                 if(findFunctionByAddressInVector(tags, i, &index) != EXIT_SUCCESS){
@@ -148,7 +152,9 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                     struct tag* temp = calloc(1, sizeof(struct tag));
                     temp->position = i;
                     temp->name = calloc(1, sizeof(char*));
-                    sprintf(temp->name, "f%d:\n",*countOfFunction);
+                    if(byteCodes[callPos] == F){
+                        sprintf(temp->name, "f%d:\n",*countOfFunction);
+                    } else sprintf(temp->name, "t%d:\n",*countOfFunction);
                     (*countOfFunction) += 1;
                     vectorAdd(tags, temp);
                 }
@@ -161,6 +167,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             case JGE:
             case JMP:
             case CALL:
+                callPos = i;
                 printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);
@@ -170,7 +177,10 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                     struct tag* temp = calloc(1, sizeof(struct tag));
                     temp->position = funcArg;
                     temp->name = calloc(1, sizeof(char*));
-                    sprintf(temp->name, "f%d:\n",*countOfFunction);
+                    if(byteCodes[callPos] == CALL){
+                        sprintf(temp->name, "f%d:\n",*countOfFunction);
+                    }
+                    else sprintf(temp->name, "t%d:\n",*countOfFunction);
                     (*countOfFunction) += 1;
                     vectorAdd(tags, temp);
                 }
