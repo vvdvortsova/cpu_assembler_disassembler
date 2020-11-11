@@ -27,8 +27,10 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode);
 byte getOpCodeWithStringOfCode(const char* code, size_t len);
 void getNextMnemonic(char** MnemonicStart, char**  mnemonicEnd, const char* endOfFile);
 bool getDoubleNumber(char*  mnemonicStart, double* number);
-int writeTokenToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags);
 byte getRegistersByMnemonic(const char* code, size_t len);
 int writeToFileTWOValues(byte opCode, byte rgCode, FILE* file);
+int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, vector* tags, size_t* countsOfBytes);
+int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes);
+
 #endif //CPU_ASSEMBLER_DISASSEMBLER_ASM_H
 

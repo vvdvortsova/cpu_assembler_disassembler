@@ -30,6 +30,14 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 i++;
                 break;
             case JMP:
+                //just jump
+                //and we do not remember the return address
+//                cpu->cpuState = JMP_STATE;
+                i++;
+                addressOfFunction = *(int*)(byteCodes + i);
+                i = addressOfFunction;//address after "f" byte
+                break;
+            case CALL:
                 cpu->cpuState = JMP_STATE;
                 i++;
                 //read address

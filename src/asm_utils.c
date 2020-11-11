@@ -17,9 +17,10 @@ const char* getStringOfOpCode(byte code) {
         case RBX:  return "rbx";
         case PUSHR:return "push";
         case POPR: return "pop";
-        case JMP:  return "jmp";
+        case CALL:  return "call";
         case RET:  return "ret";
         case F:    return "f";
+        case JMP:    return "jmp";
         default:   return NULL;
     }
 }

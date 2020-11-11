@@ -70,6 +70,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                 }
                 break;
             case JMP:
+            case CALL:
                 printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);
@@ -147,6 +148,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                 }
                 break;
             case JMP:
+            case CALL:
                 printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);

@@ -1,6 +1,4 @@
 #include "asm.h"
-int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, vector* tags, size_t* countsOfBytes);
-int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes);
 
 byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     assert(code != NULL);
@@ -15,8 +13,9 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "in",len) == 0)    return IN;
     if (strncmp(code, "out",len) == 0)   return OUT;
     if (strncmp(code, "ret",len) == 0)   return RET;
-    if (strncmp(code, "jmp",len) == 0)   return JMP;
+    if (strncmp(code, "call",len) == 0)   return CALL;
     if (strncmp(code, "f",len) == 0)     return F;
+    if (strncmp(code, "jmp",len) == 0)     return JMP;
     return INVALID_OP_ERROR;
 }
 
@@ -146,6 +145,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                     exit(EXIT_FAILURE);
                 }
             case JMP:
+            case CALL:
                 *countsOfBytes += sizeof(byte);//opCode
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);//get the name of tag function
                 *countsOfBytes += sizeof(int);//number of bytes
@@ -238,16 +238,18 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                     exit(EXIT_FAILURE);
                 }
             case JMP:
+            case CALL:
                 isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);//write opCode
                 assert(isCorrectWrite == 1);
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);//get the name of tag function
+                lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
                 //get mnemonic and try to find it in tags and rechange with position
                 char *temp = calloc(1, sizeof(temp));
                 strncpy(temp, *mnemonicBegin, lenOfMnemonic);
                 for (int i = 0; i < tags->total; ++i) {
                     char tempElem[90] = "";
                     strcpy(tempElem,((struct tag *) vectorGet(tags, i))->name);
-                    if (strncmp(temp, tempElem, lenOfMnemonic - 1) == 0) {
+                    if (strncmp(temp, tempElem, lenOfMnemonic) == 0) {
                         int pos = ((struct tag *) vectorGet(tags, i))->position;
                         isCorrectWrite = fwrite(&pos, sizeof(int), 1, file);
                         assert(isCorrectWrite == 1);

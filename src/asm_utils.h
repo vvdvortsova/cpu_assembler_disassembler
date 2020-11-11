@@ -28,9 +28,10 @@ typedef unsigned char byte;
 #define RBX   0b00100001u
 #define PUSHR 0b0001111u
 #define POPR  0b00100000u
-#define JMP   0b00100010u
+#define CALL  0b00100010u
 #define RET   0b00100011u
 #define F     0b00100100u
+#define JMP   0b00100101u
 
 
 

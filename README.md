@@ -20,6 +20,10 @@ Update: jmp work!
 | push rax| Pushes num from register rax to the top of the stack |
 | pop rax| Pops num from the top of the stack and put it to the register rax|
 | jmp tag| Jump to the follow tag|
+| call tag| Jump to the follow tag and execute the body of function. Save return address in returnStack.|
+| ret| take address from the return stack and jump to this address |
+| jxx tag| conditional jump instructions|
+
 
 Also, there are vector to help to create assembler and disassembler\
 in vector.c and vector.h
