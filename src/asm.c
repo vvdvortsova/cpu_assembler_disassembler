@@ -386,7 +386,7 @@ int main(int argc, char** argv) {
         assembler(argv[1], argv[2]);
         return EXIT_SUCCESS;
     }
-    printf("Pls!Check your arguments!\n");
+    printf("Please!Check your arguments!\n");
     exit(EXIT_FAILURE);
 }
 

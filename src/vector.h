@@ -21,7 +21,7 @@ int vectorTotal(vector* v);
 static void vectorResize(vector* v, int cap);
 void vectorAdd(vector* v, void* item);
 void vectorSet(vector* v, int index, void* item);
-void *vectorGet(vector* v, int index);
+void* vectorGet(vector* v, int index);
 void vectorDelete(vector* v, int index);
 void vectorFree(vector* v);
 

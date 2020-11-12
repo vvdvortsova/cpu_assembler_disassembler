@@ -36,15 +36,8 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics) {
         exit(EXIT_FAILURE);
     }
 
-//    disassemblerToFile(byteCodes, size, fileMnemonics);
     disassembleFirstWayToReadTags(byteCodes, size, tags, &countOfFunction, &countOfBytes);
-//    printf("Print Vector before creating tags\n");
-//    printfVector(tags);
-//
-//    printf("size = %d countOfBytes = %d\n",size,countOfBytes);
-
     disassembleSecondWayToWriteTags(byteCodes, size, tags, fileMnemonics, &countOfBytes);
-
 
     vectorFree(tags);
     fclose(fileMnemonics);
@@ -68,9 +61,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
             case F:
                 index = 0;
                 i++;// because of i start from zero
-//                printf("f %d\n", i);
                 if(findFunctionByAddressInVector(tags, i, &index) == EXIT_SUCCESS) {
-//                    printf("in f %d\n", i);
                     struct tag* elem = (struct tag*)vectorGet(tags, index);
                     fprintf(file,"%s", elem->name);
                 }
@@ -83,13 +74,10 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
             case JGE:
             case JMP:
             case CALL:
-//                printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);
-//                printf("jmp address %d\n", funcArg);
                 fprintf(file,"%s ", code);
                 if(findFunctionByAddressInVector(tags, funcArg, &index) == EXIT_SUCCESS) {
-//                    printf("in jmp %d\n", i);
                     struct tag* elem = (struct tag*)vectorGet(tags, index);
                     char copy[90];
                     strcpy(copy, elem->name);
@@ -143,7 +131,6 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             case F:
                 callPos = i;
                 i++;// because of i start from zero
-//                printf("f %d\n", i);
                 if(findFunctionByAddressInVector(tags, i, &index) != EXIT_SUCCESS){
                     //if we did not find this function in array
                     struct tag* temp = calloc(1, sizeof(struct tag));
@@ -165,10 +152,8 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             case JMP:
             case CALL:
                 callPos = i;
-//                printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);
-//                printf("jmp address %d\n", funcArg);
                 if(findFunctionByAddressInVector(tags, funcArg, &index) != EXIT_SUCCESS){
                     //if we did not find this function in array
                     struct tag* temp = calloc(1, sizeof(struct tag));
