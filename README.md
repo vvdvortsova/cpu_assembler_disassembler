@@ -2,10 +2,7 @@
 
 ## Description
 The first version of machine stack and assembler / disassembler.\
-This version of the stack machine is implemented with registers rax/rbx and jmp.\
-Update: jmp work!\
-Update: call work!\
-Update: jxx work!
+This version of the stack machine is implemented with registers rax/rbx and jmp, call and conditional jmp.\
 
 
 | Command | Description |

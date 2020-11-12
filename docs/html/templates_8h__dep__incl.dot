@@ -1,0 +1,14 @@
+digraph "src/stack_lib/templates.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="src/stack_lib/templates.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="src/stack_lib/stack.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$stack_8h.html",tooltip="Definitions of methods for stack. "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="src/stack_lib/all_possible\l_stack.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$all__possible__stack_8h.html",tooltip="Definitions of any types to use it in stack. "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="src/cpu.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8h.html",tooltip="Headers for a stack machine. "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="src/cpu.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8c.html",tooltip="Describes a stack machine. "];
+}

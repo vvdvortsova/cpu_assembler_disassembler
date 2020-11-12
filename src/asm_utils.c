@@ -1,6 +1,6 @@
 /**
 * @file         asm_utils.c
-* @brief
+* @brief        Helper methods for asm, disasm, cpu
 * @author       Dvortsova Varvara BSE182 HSE
 * @include      "asm_utils.h"
 */
@@ -46,14 +46,14 @@ void printfVector( vector* v){
     }
 }
 int findFunctionByAddressInVector(vector* v, int addres, int* index){
-    printf("your vector %p\n",(void*)v);
+//    printf("your vector %p\n",(void*)v);
     struct tag* a2 = calloc(1, sizeof(struct tag));
     for (int i = 0; i < v->total; ++i) {
         a2 = (struct tag*)vectorGet(v, i);
-        printf("pos = %d adr = %d\n",a2->position,addres);
+//        printf("pos = %d adr = %d\n",a2->position,addres);
         if(a2->position == addres){
             *index = i;
-            printf("true! index = %d\n",*index);
+//            printf("true! index = %d\n",*index);
             return EXIT_SUCCESS;
         }
     }

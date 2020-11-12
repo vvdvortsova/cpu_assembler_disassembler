@@ -32,21 +32,18 @@ void vectorAdd(vector *v, void *item) {
     v->items[v->total++] = item;
 }
 
-void vectorSet(vector *v, int index, void *item)
-{
+void vectorSet(vector *v, int index, void *item) {
     if (index >= 0 && index < v->total)
         v->items[index] = item;
 }
 
-void *vectorGet(vector *v, int index)
-{
+void *vectorGet(vector *v, int index) {
     if (index >= 0 && index < v->total)
         return v->items[index];
     return NULL;
 }
 
-void vectorDelete(vector *v, int index)
-{
+void vectorDelete(vector *v, int index) {
     if (index < 0 || index >= v->total)
         return;
 

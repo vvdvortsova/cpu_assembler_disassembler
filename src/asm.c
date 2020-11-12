@@ -1,6 +1,6 @@
 /**
 * @file         asm.c
-* @brief        Definitions of methods for asm
+* @brief        Definitions of methods for assembler
 * @author       Dvortsova Varvara BSE182 HSE
 * @include
 */
@@ -78,8 +78,8 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
             mnemonicEnd++;
         mnemonicBegin = mnemonicEnd;
     }
-    printf("after first way\n");
-    printfVector(tags);
+//    printf("after first way\n");
+//    printfVector(tags);
 
     pointToTheEnd = disasmCode + size;
     mnemonicBegin = disasmCode;
@@ -101,8 +101,8 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
             mnemonicEnd++;
         mnemonicBegin = mnemonicEnd;
     }
-    printf("after second way\n");
-    printfVector(tags);
+//    printf("after second way\n");
+//    printfVector(tags);
 
     vectorFree(tags);
     free(disasmCode);
@@ -170,13 +170,13 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 *countsOfBytes += sizeof(int);//number of bytes
                 return EXIT_SUCCESS;
             case POP:
-                printf("mnemonicEnd[0] = %s\n", *(mnemonicEnd));
+//                printf("mnemonicEnd[0] = %s\n", *(mnemonicEnd));
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0){
                     *countsOfBytes += sizeof(byte);//opCode
                     return EXIT_SUCCESS;
                 }
                 if (strncmp(mnemonicEnd[0], "\n", 1) != 0) {//means that is register
-                    printf("Зашел! mnemonicEnd[0] = %s\n", *(mnemonicEnd));
+//                    printf("Зашел! mnemonicEnd[0] = %s\n", *(mnemonicEnd));
                     getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                     lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
                     rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
@@ -193,10 +193,8 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 return EXIT_SUCCESS;
         }
     }else{
-        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0){//TODO
+        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0){
             lenOfMnemonic = (*mnemonicEnd - *mnemonicBegin);
-            //this is tag
-            //TODO
             char* temp = calloc(1, sizeof(temp));
             strncpy(temp, *mnemonicBegin,lenOfMnemonic-1);
             struct tag* item = calloc(1, sizeof(struct tag));
@@ -212,8 +210,8 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
 }
 
 int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes){
-    printf("in second way\n");
-    printfVector(tags);
+//    printf("in second way\n");
+//    printfVector(tags);
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
     byte rgCode;
@@ -291,7 +289,7 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 fprintf(stderr, "Can't find key in tags arr!\n");
                 return EXIT_FAILURE;
             case POP:
-                printf("mnemonicEnd[0] = %s\n",mnemonicEnd[0]);
+//                printf("mnemonicEnd[0] = %s\n",mnemonicEnd[0]);
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0){
                     countsOfBytes -= sizeof(byte);//opCode
                     if (countsOfBytes < 0) {
@@ -341,13 +339,13 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
             for (int i = 0; i < tags->total; ++i) {
                 char tempElem[90] = "";
                 struct tag* tmpTag = (struct tag*) vectorGet(tags, i);
-                printf("vectorGet(tags, %d).name = %s\n",i, tmpTag->name);
+//                printf("vectorGet(tags, %d).name = %s\n",i, tmpTag->name);
                 strcpy(tempElem, tmpTag->name);
 
                 if (strncmp(temp, tempElem, lenOfMnemonic - 1) == 0) {
-                    //там где описание фукции мы храним букву f и так для каждой фукции
-                    //а рядом с jmp храним количество байт, где находится описание функции)))
-                    //в disasm соответственно названия свои:(
+                    //where the nme of function we put F
+                    //where the tag name we put TAG
+                    //in disasm you will has another names with prefix "t" and "F"
                     byte pos = getOpCodeWithStringOfCode(&tempElem[0],1);
                     isCorrectWrite = fwrite(&pos, sizeof(byte), 1, file);
                     assert(isCorrectWrite == 1);

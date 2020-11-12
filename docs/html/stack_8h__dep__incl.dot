@@ -1,0 +1,12 @@
+digraph "src/stack_lib/stack.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node8 [label="src/stack_lib/stack.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="src/stack_lib/all_possible\l_stack.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$all__possible__stack_8h.html",tooltip="Definitions of any types to use it in stack. "];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="src/cpu.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8h.html",tooltip="Headers for a stack machine. "];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="src/cpu.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8c.html",tooltip="Describes a stack machine. "];
+}

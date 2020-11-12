@@ -1,6 +1,6 @@
 /**
 * @file         asm_utils.h
-* @brief
+* @brief        Helper methods for asm, disasm, cpu
 * @author       Dvortsova Varvara BSE182 HSE
 * @include      stdio.h, stdlib.h, assert.h, "vector.h"
 */
@@ -12,12 +12,13 @@
 #include "vector.h"
 
 
+/*!< Struct for keeping elements: (function/tag name, address) */
 struct tag{
     char* name;
     int position;
 };
 
-
+/*!< typedef for byte */
 typedef unsigned char byte;
 
 #define PUSH  0b00000010u
@@ -48,9 +49,34 @@ typedef unsigned char byte;
 
 
 
-
+/**
+ * Method returns char array from file.
+ * @param fName
+ * @param size
+ * @param FLAG
+ * @return
+ */
 char* getBuffer(char* fName, int* size, char* FLAG);
+
+/**
+ * Method returns the mnemonic for opCode.
+ * @param code
+ * @return mnemonic
+ */
 const char* getStringOfOpCode(byte code);
+
+/**
+ * Method prints vector for debug.
+ * @param v
+ */
 void printfVector( vector* v);
+
+/**
+ * Method finds function/tag name by address.
+ * @param v
+ * @param addres
+ * @param index
+ * @return
+ */
 int findFunctionByAddressInVector(vector* v, int addres, int* index);
 #endif //CPU_ASSEMBLER_DISASSEMBLER_ASM_UTILS_H

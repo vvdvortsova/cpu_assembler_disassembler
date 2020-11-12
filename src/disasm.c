@@ -1,17 +1,17 @@
 /**
 * @file         disasm.c
-* @brief
+* @brief        Disassembler methods
 * @author       Dvortsova Varvara BSE182 HSE
 * @include      "disasm.h"
 */
 #include "disasm.h"
 
 
-int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file){
+int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file) {
     const char* code = NULL;
     fprintf(file,"%s ", instruction);
     code = getStringOfOpCode(reg);
-    if(code == NULL){
+    if(code == NULL) {
         fprintf(stderr,"Unexpected register!\n");
         exit(EXIT_FAILURE);
     }
@@ -19,12 +19,11 @@ int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file){
     return EXIT_SUCCESS;
 }
 
-int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics){
+int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics) {
     assert(fileWithByteCode != NULL);
     assert(fileWithMnemonics != NULL);
     vector* tags = calloc(1, sizeof(vector));
     vectorInit(tags);
-
 
     int size = 0;
     int countOfFunction = 0;
@@ -32,28 +31,28 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics){
     char* byteCodes = getBuffer(fileWithByteCode, &size, "rb");
     FILE* fileMnemonics = fopen(fileWithMnemonics, "w");
 
-    if(fileMnemonics == NULL){
+    if(fileMnemonics == NULL) {
         fprintf(stderr,"Do not open = %s\n", fileWithMnemonics);
         exit(EXIT_FAILURE);
     }
 
 //    disassemblerToFile(byteCodes, size, fileMnemonics);
     disassembleFirstWayToReadTags(byteCodes, size, tags, &countOfFunction, &countOfBytes);
-    printf("Print Vector before creating tags\n");
-    printfVector(tags);
-
-    printf("size = %d countOfBytes = %d\n",size,countOfBytes);
+//    printf("Print Vector before creating tags\n");
+//    printfVector(tags);
+//
+//    printf("size = %d countOfBytes = %d\n",size,countOfBytes);
 
     disassembleSecondWayToWriteTags(byteCodes, size, tags, fileMnemonics, &countOfBytes);
 
 
-        vectorFree(tags);
+    vectorFree(tags);
     fclose(fileMnemonics);
     return EXIT_SUCCESS;
 }
 
 
-void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FILE* file, int* countOfBytes){
+void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FILE* file, int* countOfBytes) {
     int i = 0;
     for (i = 0; i < size;) {
         double arg = 0;
@@ -69,9 +68,9 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
             case F:
                 index = 0;
                 i++;// because of i start from zero
-                printf("f %d\n", i);
+//                printf("f %d\n", i);
                 if(findFunctionByAddressInVector(tags, i, &index) == EXIT_SUCCESS) {
-                    printf("in f %d\n", i);
+//                    printf("in f %d\n", i);
                     struct tag* elem = (struct tag*)vectorGet(tags, index);
                     fprintf(file,"%s", elem->name);
                 }
@@ -84,13 +83,13 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
             case JGE:
             case JMP:
             case CALL:
-                printf("jmp %d\n", i);
+//                printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);
-                printf("jmp address %d\n", funcArg);
+//                printf("jmp address %d\n", funcArg);
                 fprintf(file,"%s ", code);
                 if(findFunctionByAddressInVector(tags, funcArg, &index) == EXIT_SUCCESS) {
-                    printf("in jmp %d\n", i);
+//                    printf("in jmp %d\n", i);
                     struct tag* elem = (struct tag*)vectorGet(tags, index);
                     char copy[90];
                     strcpy(copy, elem->name);
@@ -126,15 +125,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
     *countOfBytes = i;
 }
 
-/**
- * Короче, если нам попадается функция, то чекаем, если она в векторе, иначе добавляем
- * также увеличиваем счетчик фукций, ибо названия у нас будут свои
- * @param byteCodes
- * @param size
- * @param tags
- * @param countOfFunction
- * @param countOfBytes
- */
+
 void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int* countOfFunction, int* countOfBytes){
     int i = 0;
     int callPos = 0;
@@ -152,7 +143,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             case F:
                 callPos = i;
                 i++;// because of i start from zero
-                printf("f %d\n", i);
+//                printf("f %d\n", i);
                 if(findFunctionByAddressInVector(tags, i, &index) != EXIT_SUCCESS){
                     //if we did not find this function in array
                     struct tag* temp = calloc(1, sizeof(struct tag));
@@ -174,10 +165,10 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             case JMP:
             case CALL:
                 callPos = i;
-                printf("jmp %d\n", i);
+//                printf("jmp %d\n", i);
                 i++;
                 funcArg = (int)(byteCodes[i]);
-                printf("jmp address %d\n", funcArg);
+//                printf("jmp address %d\n", funcArg);
                 if(findFunctionByAddressInVector(tags, funcArg, &index) != EXIT_SUCCESS){
                     //if we did not find this function in array
                     struct tag* temp = calloc(1, sizeof(struct tag));
@@ -212,6 +203,6 @@ int main(int argc, char **argv) {
         disAssembler(argv[1], argv[2]);
         return 0;
     }
-    printf("Pls!Check your arguments!\n");
+    printf("Please! Check your arguments!\n");
     exit(EXIT_FAILURE);
 }

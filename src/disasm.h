@@ -1,6 +1,6 @@
 /**
 * @file         disasm.h
-* @brief
+* @brief        Disassembler methods
 * @author       Dvortsova Varvara BSE182 HSE
 * @include      assert.h, stdlib.h, stdio.h, stdbool.h, "stack_lib/all_possible_stack.h", "asm_utils.h"
 */
@@ -30,7 +30,29 @@ int disAssembler(const char* fileWithByteCode, const char* fileWithMnemonics);
  * @param file
  */
 int writeMnemonicsToFile(const char* instruction, byte reg, FILE* file);
+
+/**
+ * The method makes the first pass through the bytecode and
+ * collects information about functions and tags.
+ * If we found function than try to find it in vector.
+ * If it is not in vector then add  to  vector and increase countOfFunction.
+ * @param byteCodes
+ * @param size
+ * @param tags
+ * @param countOfFunction
+ * @param countOfBytes
+ */
 void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int* countOfFunction, int* countOfBytes);
+
+/**
+ * The method makes the second pass through the bytecode
+ * and translates the bytecode into mnenonics.
+ * @param byteCodes
+ * @param size
+ * @param tags
+ * @param file
+ * @param countOfBytes
+ */
 void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FILE* file, int* countOfBytes);
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_DISASM_H

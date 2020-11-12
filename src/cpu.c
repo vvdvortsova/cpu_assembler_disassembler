@@ -1,6 +1,6 @@
 /**
 * @file         cpu.c
-* @brief
+* @brief        Describes a stack machine
 * @author       Dvortsova Varvara BSE182 HSE
 * @include      "cpu.h"
 */
@@ -241,7 +241,7 @@ int binaryOp(Stack_double* stack, byte code){
 
 }
 
-int conditionOp(Stack_double* stack, byte code){
+int conditionOp(Stack_double* stack, byte code) {
     double arg1 = 0;
     double arg2 = 0;
     arg1 = StackPop_double(stack);
@@ -334,7 +334,7 @@ int main(int argc, char** argv) {
         countResult(argv[1]);
         return 0;
     }
-    printf("Pls!Check your arguments!\n");
+    printf("Please! Check your arguments!\n");
     exit(EXIT_FAILURE);
 
 }
