@@ -18,7 +18,7 @@ typedef struct vector {
 
 void vectorInit(vector* v);
 int vectorTotal(vector* v);
-static void vectorResize(vector* v, int cap);
+void vectorResize(vector* v, int cap);
 void vectorAdd(vector* v, void* item);
 void vectorSet(vector* v, int index, void* item);
 void* vectorGet(vector* v, int index);

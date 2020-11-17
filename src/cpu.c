@@ -312,12 +312,6 @@ int countResult(char* fileName) {
     Stack_double returnStack;
     CPU cpu = {&stack, &returnStack, 0, 0};
     initCPU(&cpu);
-
-    if(byteCodes[size-1] != HLT) {
-        fprintf(stderr,"The program can't finish executing!\n");
-        fprintf(stderr,"Because of the lack of HLT command at the end of binary file!\n");
-        return EXIT_FAILURE;
-    }
     cpu.cpuState = SIMPLE_STATE;
     if(processMachine(byteCodes, size, &cpu) != EXIT_SUCCESS) {
         fprintf(stderr,"The program has not finished executing!\n");

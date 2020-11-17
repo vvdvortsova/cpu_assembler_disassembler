@@ -14,7 +14,7 @@ int vectorTotal(vector* v) {
     return v->total;
 }
 
-static void vectorResize(vector* v, int capacity) {
+void vectorResize(vector* v, int capacity) {
 #ifdef DEBUG_ON
     printf("vector_resize: %d to %d\n", v->capacity, capacity);
 #endif

@@ -16,7 +16,9 @@ add_executable(
         src/asm_utils.c
         src/asm_utils.h
         src/vector.c
-        src/vector.h)
+        src/vector.h
+        src/asm_ram.c
+        src/asm_ram.h)
 
 add_executable(
         asm
