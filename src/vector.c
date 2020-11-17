@@ -7,10 +7,10 @@
 void vectorInit(vector* v) {
     v->capacity = VECTOR_INIT_CAPACITY;
     v->total = 0;
-    v->items = malloc(sizeof(void *) * v->capacity);
+    v->items = malloc(sizeof(void *)* v->capacity);
 }
 
-int vectorTotal(vector *v) {
+int vectorTotal(vector* v) {
     return v->total;
 }
 
@@ -19,7 +19,7 @@ static void vectorResize(vector* v, int capacity) {
     printf("vector_resize: %d to %d\n", v->capacity, capacity);
 #endif
 
-    void **items = realloc(v->items, sizeof(void*)* capacity);
+    void** items = realloc(v->items, sizeof(void*)* capacity);
     if (items) {
         v->items = items;
         v->capacity = capacity;

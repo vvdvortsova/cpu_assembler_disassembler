@@ -44,7 +44,7 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
     assert(fileWithMnemonics != NULL);
 
     //vector for saving tag-pos
-    vector *tags = calloc(1, sizeof(vector));
+    vector* tags = calloc(1, sizeof(vector));
     vectorInit(tags);
 
     int size = 0;
