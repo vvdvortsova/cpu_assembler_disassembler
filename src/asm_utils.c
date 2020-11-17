@@ -37,7 +37,7 @@ const char* getStringOfOpCode(byte code) {
     }
 }
 
-void printfVector( vector* v){
+void printfVector(vector* v) {
     printf("your vector %p\n",(void*)v);
     struct tag* a2 = calloc(1, sizeof(struct tag));
     for (int i = 0; i < v->total; ++i) {
@@ -45,7 +45,7 @@ void printfVector( vector* v){
         printf("pos = %d fname = %s\n", a2->position, a2->name);
     }
 }
-int findFunctionByAddressInVector(vector* v, int addres, int* index){
+int findFunctionByAddressInVector(vector* v, int addres, int* index) {
 //    printf("your vector %p\n",(void*)v);
     struct tag* a2 = calloc(1, sizeof(struct tag));
     for (int i = 0; i < v->total; ++i) {
@@ -68,7 +68,7 @@ char* getBuffer(char* fName, int* size, char* FLAG) {
 
     FILE* file = NULL;
     file = fopen(fName, FLAG);
-    if(!file){
+    if(!file) {
         fprintf(stderr,"Do not open = %s\n", fName);
         exit(EXIT_FAILURE);
     }
@@ -82,7 +82,7 @@ char* getBuffer(char* fName, int* size, char* FLAG) {
     if (arr) {
         //read all file in bufferOrigin
         int res = fread(arr, 1, *size, file);
-        if(res != *size){
+        if(res != *size) {
             fprintf(stderr,"Do not read file to buffer = %s\n", fName);
             exit(EXIT_FAILURE);
         }

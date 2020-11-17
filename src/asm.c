@@ -32,7 +32,7 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     return INVALID_OP_ERROR;
 }
 
-byte getRegistersByMnemonic(const char* code, size_t len){
+byte getRegistersByMnemonic(const char* code, size_t len) {
     assert(code != NULL);
     if (strncmp(code, "rax", len) == 0) return RAX;
     if (strncmp(code, "rbx", len) == 0) return RBX;
@@ -132,7 +132,7 @@ bool getDoubleNumber(char* mnemonicStart, double* number) {
     return true;
 }
 
-int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, vector* tags, size_t* countsOfBytes){
+int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, vector* tags, size_t* countsOfBytes) {
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
     byte rgCode;
@@ -171,7 +171,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 return EXIT_SUCCESS;
             case POP:
 //                printf("mnemonicEnd[0] = %s\n", *(mnemonicEnd));
-                if (strncmp(mnemonicEnd[0], "\n", 1) == 0){
+                if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
                     *countsOfBytes += sizeof(byte);//opCode
                     return EXIT_SUCCESS;
                 }
@@ -193,7 +193,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 return EXIT_SUCCESS;
         }
     }else{
-        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0){
+        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0) {
             lenOfMnemonic = (*mnemonicEnd - *mnemonicBegin);
             char* temp = calloc(1, sizeof(temp));
             strncpy(temp, *mnemonicBegin,lenOfMnemonic-1);
@@ -209,7 +209,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
     }
 }
 
-int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes){
+int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes) {
 //    printf("in second way\n");
 //    printfVector(tags);
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
@@ -290,7 +290,7 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 return EXIT_FAILURE;
             case POP:
 //                printf("mnemonicEnd[0] = %s\n",mnemonicEnd[0]);
-                if (strncmp(mnemonicEnd[0], "\n", 1) == 0){
+                if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
                     countsOfBytes -= sizeof(byte);//opCode
                     if (countsOfBytes < 0) {
                         fprintf(stderr, "Something went wrong with amount of bytes!\n");
@@ -367,14 +367,14 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
     }
 }
 
-int writeToFileTWOValues(byte opCode, byte rgCode, FILE* file){
+int writeToFileTWOValues(byte opCode, byte rgCode, FILE* file) {
     checkType isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
-    if(isCorrectWrite != 1){
+    if(isCorrectWrite != 1) {
         fprintf(stderr, "Can't write opCode to file!\n");
         return EXIT_FAILURE;
     }
     isCorrectWrite = fwrite(&rgCode, sizeof(byte), 1, file);
-    if(isCorrectWrite != 1){
+    if(isCorrectWrite != 1) {
         fprintf(stderr, "Can't write rgCode to file!\n");
         return EXIT_FAILURE;
     }
@@ -382,7 +382,7 @@ int writeToFileTWOValues(byte opCode, byte rgCode, FILE* file){
 }
 
 int main(int argc, char** argv) {
-    if(argc == 3){
+    if(argc == 3) {
         assembler(argv[1], argv[2]);
         return EXIT_SUCCESS;
     }

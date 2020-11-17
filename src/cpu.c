@@ -29,7 +29,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
         }
         double arg1 = 0;
         int addressOfFunction = 0;
-        switch(byteCodes[i]){
+        switch(byteCodes[i]) {
             case TAG:
                 i++;
                 break;
@@ -45,8 +45,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
             case JLE:
             case JG:
             case JGE:
-                if(conditionOp(cpu->stack, byteCodes[i]) == EXIT_SUCCESS)
-                {
+                if(conditionOp(cpu->stack, byteCodes[i]) == EXIT_SUCCESS) {
                     i++;
                     addressOfFunction = *(int*)(byteCodes + i);
                     i = addressOfFunction;//address after "f" byte
@@ -77,12 +76,12 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 //look at the top of stack and get address of return point
                 //jump to return point
                 //or if it was func_state than we turn off it
-                if(cpu->cpuState == CALL_STATE){
+                if(cpu->cpuState == CALL_STATE) {
                     cpu->cpuState = SIMPLE_STATE;
                     addressOfFunction = StackPop_double(cpu->returnStack);
                     i = addressOfFunction;
                     break;
-                } else if (cpu->cpuState == FUNC_STATE){
+                } else if (cpu->cpuState == FUNC_STATE) {
                     cpu->cpuState = SIMPLE_STATE;
                     i++;
                     break;
@@ -90,7 +89,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 break;
             case PUSHR:
                 i++;//opCode
-                if(cpu->cpuState != FUNC_STATE){
+                if(cpu->cpuState != FUNC_STATE) {
                     code = getStringOfOpCode(byteCodes[i]);
                     if(code == NULL) {
                         fprintf(stderr,"Unexpected instruction! in push\n");
@@ -115,13 +114,13 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 break;
             case POPR:
                 i++;//opCode
-                if(cpu->cpuState != FUNC_STATE){
+                if(cpu->cpuState != FUNC_STATE) {
                     code = getStringOfOpCode(byteCodes[i]);
                     if(code == NULL) {
                         fprintf(stderr,"Unexpected instruction in pop!\n");
                         exit(EXIT_FAILURE);
                     }
-                    switch (byteCodes[i]){
+                    switch (byteCodes[i]) {
                         case RAX:
                             arg1 = StackPop_double(cpu->stack);
                             cpu->rax = arg1;
@@ -143,7 +142,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
             case PUSH:
                 i++;//opCode
                 arg = *(double*)(byteCodes + i);
-                if(cpu->cpuState != FUNC_STATE){
+                if(cpu->cpuState != FUNC_STATE) {
                     StackPush_double(cpu->stack,arg);
                 }
                 i += sizeof(arg);//number
@@ -152,8 +151,8 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
             case SUB:
             case DIV:
             case MUL:
-                if(cpu->cpuState != FUNC_STATE){
-                    if(binaryOp(cpu->stack, byteCodes[i]) == EXIT_FAILURE){
+                if(cpu->cpuState != FUNC_STATE) {
+                    if(binaryOp(cpu->stack, byteCodes[i]) == EXIT_FAILURE) {
                         fprintf(stderr,"Unexpected command: %s in binary file: %x !\n", code, byteCodes[i]);
                         return EXIT_FAILURE;
                     }
@@ -170,7 +169,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
                 ++i;
                 if(cpu->cpuState != FUNC_STATE) {
                     arg1 = StackPop_double(cpu->stack);
-                    if(arg1 < 0){
+                    if(arg1 < 0) {
                         fprintf(stderr,"Sqrt from negative number! %g\n", arg1);
                         return EXIT_FAILURE;
                     }
@@ -210,13 +209,13 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
     return EXIT_SUCCESS;
 }
 
-int binaryOp(Stack_double* stack, byte code){
+int binaryOp(Stack_double* stack, byte code) {
     double arg1 = 0;
     double arg2 = 0;
     arg1 = StackPop_double(stack);
     arg2 = StackPop_double(stack);
 
-    switch(code){
+    switch(code) {
         case ADD:
             StackPush_double(stack, (arg1 + arg2));
             break;
@@ -227,7 +226,7 @@ int binaryOp(Stack_double* stack, byte code){
             StackPush_double(stack, (arg1 * arg2));
             break;
         case DIV:
-            if(arg2 == 0){
+            if(arg2 == 0) {
                 fprintf(stderr,"Division by zero! %g / %g\n", arg1, arg2);
                 return EXIT_FAILURE;
             }
@@ -248,7 +247,7 @@ int conditionOp(Stack_double* stack, byte code) {
     arg2 = StackPop_double(stack);
     bool isOK = false;
 
-    switch(code){
+    switch(code) {
         case JE:
             if(areEqual(arg1, arg2, EPS))
                 isOK = true;
@@ -279,7 +278,7 @@ int conditionOp(Stack_double* stack, byte code) {
     }
     StackPush_double(stack, arg1);
     StackPush_double(stack, arg2);
-    if(isOK){
+    if(isOK) {
         return EXIT_SUCCESS;
     }
     return EXIT_FAILURE;
@@ -314,13 +313,13 @@ int countResult(char* fileName) {
     CPU cpu = {&stack, &returnStack, 0, 0};
     initCPU(&cpu);
 
-    if(byteCodes[size-1] != HLT){
+    if(byteCodes[size-1] != HLT) {
         fprintf(stderr,"The program can't finish executing!\n");
         fprintf(stderr,"Because of the lack of HLT command at the end of binary file!\n");
         return EXIT_FAILURE;
     }
     cpu.cpuState = SIMPLE_STATE;
-    if(processMachine(byteCodes, size, &cpu) != EXIT_SUCCESS){
+    if(processMachine(byteCodes, size, &cpu) != EXIT_SUCCESS) {
         fprintf(stderr,"The program has not finished executing!\n");
         return EXIT_FAILURE;
     }
@@ -330,7 +329,7 @@ int countResult(char* fileName) {
 }
 
 int main(int argc, char** argv) {
-    if(argc == 2){
+    if(argc == 2) {
         countResult(argv[1]);
         return 0;
     }
@@ -343,7 +342,7 @@ double getDoubleFromInput(char message[]) {
     double number;
     printf("%s", message);
     int correctInput = scanf("%lg", &number);
-    while(correctInput != 1){
+    while(correctInput != 1) {
         while (getchar() != EOF && getchar() != '\n' && getchar() != '\0');
         printf("Wrong input,try again\n%s", message);
         correctInput = scanf("%lg", &number);

@@ -14,36 +14,36 @@ int vectorTotal(vector *v) {
     return v->total;
 }
 
-static void vectorResize(vector *v, int capacity) {
+static void vectorResize(vector* v, int capacity) {
 #ifdef DEBUG_ON
     printf("vector_resize: %d to %d\n", v->capacity, capacity);
 #endif
 
-    void **items = realloc(v->items, sizeof(void *) * capacity);
+    void **items = realloc(v->items, sizeof(void*)* capacity);
     if (items) {
         v->items = items;
         v->capacity = capacity;
     }
 }
 
-void vectorAdd(vector *v, void *item) {
+void vectorAdd(vector* v, void* item) {
     if (v->capacity == v->total)
         vectorResize(v, v->capacity * 2);
     v->items[v->total++] = item;
 }
 
-void vectorSet(vector *v, int index, void *item) {
+void vectorSet(vector* v, int index, void* item) {
     if (index >= 0 && index < v->total)
         v->items[index] = item;
 }
 
-void *vectorGet(vector *v, int index) {
+void *vectorGet(vector* v, int index) {
     if (index >= 0 && index < v->total)
         return v->items[index];
     return NULL;
 }
 
-void vectorDelete(vector *v, int index) {
+void vectorDelete(vector* v, int index) {
     if (index < 0 || index >= v->total)
         return;
 
@@ -60,6 +60,6 @@ void vectorDelete(vector *v, int index) {
         vectorResize(v, v->capacity / 2);
 }
 
-void vectorFree(vector *v) {
+void vectorFree(vector* v) {
     free(v->items);
 }
