@@ -97,6 +97,18 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                 fprintf(file,"%g\n", arg);
                 i += sizeof(arg);
                 break;
+            case MOV:
+                i++;
+                fprintf(file,"%s ", code);
+                code = getStringOfOpCode(byteCodes[i]);
+                fprintf(file,"%s, ", code);
+                i++;
+                fprintf(file,"[");
+                addr = *(int*)(byteCodes + i);
+                fprintf(file,"%d", addr);
+                fprintf(file,"]\n");
+                i += sizeof(addr);
+                break;
             case POPR:
             case PUSHR:
                 if(writeMnemonicsToFile(code, byteCodes[i + 1], file) != EXIT_FAILURE) {
@@ -184,6 +196,13 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                 i++;
                 arg = *(double*)(byteCodes + i);
                 i += sizeof(arg);
+                break;
+            case MOV:
+                //TODO
+                i++;//mov
+                i++;//reg
+                addr = *(int*)(byteCodes + i);
+                i += sizeof(addr);
                 break;
             case POP_RAM:
             case PUSH_RAM:

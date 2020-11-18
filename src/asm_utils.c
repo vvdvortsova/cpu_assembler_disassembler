@@ -37,7 +37,7 @@ const char* getStringOfOpCode(byte code) {
         case POP_RAM:  return "pop";
         case CMP:      return "cmp";
         case MOV:      return "mov";
-        default:   return NULL;
+        default:       return NULL;
     }
 }
 

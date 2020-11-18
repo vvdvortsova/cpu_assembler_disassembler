@@ -49,7 +49,7 @@ typedef unsigned char byte;
 #define PUSH_RAM    0b00101110u
 #define POP_RAM     0b00101111u
 #define CMP         0b00110000u
-#define MOV         0b00110001u
+#define MOV         0b00110011u
 
 
 

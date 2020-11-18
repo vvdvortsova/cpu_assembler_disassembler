@@ -31,8 +31,6 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "t",len) == 0)     return TAG;
     if (strncmp(code, "cmp",len) == 0)   return CMP;
     if (strncmp(code, "mov",len) == 0)   return MOV;
-    if (strncmp(code, "[",len) == 0)     return QR;
-    if (strncmp(code, "]",len) == 0)     return QL;
     return INVALID_OP_ERROR;
 }
 
@@ -152,6 +150,29 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
     byte rgCode;
     if (opCode != INVALID_OP_ERROR) {
         switch (opCode) {
+            case MOV:
+                // findReg
+                getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
+                lenOfMnemonic = *mnemonicEnd - *mnemonicBegin - 1;// because we do not calculate ","
+                rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
+                if (rgCode != INVALID_REG_ERROR) {
+                    *countsOfBytes += sizeof(byte);//opCode
+                    *countsOfBytes += sizeof(byte);//regCode
+                    getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
+                    if (strncmp(mnemonicBegin[0],"[",1) == 0) {//call ram
+                        (*mnemonicBegin)++;
+                        int addr = 0;
+//                        printf("%s\n", *mnemonicBegin);
+                        if (getIntNumber(*mnemonicBegin, &addr)) {
+                            *countsOfBytes += 2;//"[" and "]"
+                            *countsOfBytes += sizeof(byte);//opCode
+                            *countsOfBytes += sizeof(addr);//number
+                            return EXIT_SUCCESS;
+                        }
+                    }
+                }
+                printf("Unexpected register\n");
+                break;
             case PUSH:
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                 double number;
@@ -169,13 +190,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                     }
                     printf("%s 1\n", *mnemonicBegin);
 
-//                    mnemonicBegin++;
-//                    printf("%s 2\n", *mnemonicBegin);
-//
-//                    mnemonicBegin--;
-//                    printf("%s 3\n", *mnemonicBegin);
-
-                    if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
+                    if (strncmp(mnemonicBegin[0],"[",1) == 0) {//call ram
                         (*mnemonicBegin)++;
                         int addr = 0;
 //                        printf("%s\n", *mnemonicBegin);
@@ -202,6 +217,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);//get the name of tag function
                 *countsOfBytes += sizeof(int);//number of bytes
                 return EXIT_SUCCESS;
+
             case POP:
 //                printf("mnemonicEnd[0] = %s\n", *(mnemonicEnd));
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
@@ -262,6 +278,39 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
     checkType isCorrectWrite;
     if (opCode != INVALID_OP_ERROR) {
         switch (opCode) {
+            case MOV:
+                // findReg
+                getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
+                lenOfMnemonic = *mnemonicEnd - *mnemonicBegin - 1;// because we do not calculate ","
+                rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
+                if (rgCode != INVALID_REG_ERROR) {
+                    if (writeToFileTWOValues(MOV, rgCode, file) != EXIT_SUCCESS) {
+                        fprintf(stderr, "Something went wrong with writing pop!\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    countsOfBytes -= sizeof(byte);//opCode
+                    countsOfBytes -= sizeof(byte);//rgCode
+                    if (countsOfBytes < 0) {
+                        fprintf(stderr, "Something went wrong with amount of bytes!\n");
+                        return EXIT_FAILURE;
+                    }
+                    getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
+                    (*mnemonicBegin)++;
+                    int addr = 0;
+                    if (getIntNumber(*mnemonicBegin, &addr)) {
+                        isCorrectWrite = fwrite(&addr, sizeof(addr), 1, file);
+                        countsOfBytes -= sizeof(addr);
+                        assert(isCorrectWrite == 1);
+                        if (countsOfBytes < 0) {
+                            fprintf(stderr, "Something went wrong with amount of bytes!\n");
+                            return EXIT_FAILURE;
+                        }
+                        return EXIT_SUCCESS;
+                    }
+
+                }
+                printf("Unexpected register\n");
+                break;
             case PUSH:
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                 double number;

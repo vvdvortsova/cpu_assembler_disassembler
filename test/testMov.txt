@@ -1,0 +1,3 @@
+mov rbx, [9]
+mov rax, [100]
+hlt
