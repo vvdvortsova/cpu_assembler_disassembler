@@ -49,6 +49,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
     int i = 0;
     for (i = 0; i < size;) {
         double arg = 0;
+        int addr = 0;
         byte funcArg = 0;
         int index = 0;
         const char* code = getStringOfOpCode(byteCodes[i]);
@@ -104,6 +105,16 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                 }
                 fprintf(stderr,"Unexpected register or something wrong with file!\n");
                 exit(EXIT_FAILURE);
+            case POP_RAM:
+            case PUSH_RAM:
+                i++;
+                fprintf(file,"%s ", code);
+                fprintf(file,"[");
+                addr = *(int*)(byteCodes + i);
+                fprintf(file,"%d", addr);
+                fprintf(file,"]\n");
+                i += sizeof(addr);
+                break;
             default:
                 ++i;
                 fprintf(file,"%s\n", code);
@@ -119,6 +130,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
     int callPos = 0;
     for (i = 0; i < size;) {
         double arg = 0;
+        int addr = 0;
         byte funcArg = 0;
         int index = 0;
         const char* code = getStringOfOpCode(byteCodes[i]);
@@ -172,6 +184,12 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                 i++;
                 arg = *(double*)(byteCodes + i);
                 i += sizeof(arg);
+                break;
+            case POP_RAM:
+            case PUSH_RAM:
+                i++;
+                addr = *(int*)(byteCodes + i);
+                i += sizeof(addr);
                 break;
             default:
                 ++i;

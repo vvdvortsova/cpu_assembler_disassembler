@@ -29,6 +29,10 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "jg",len) == 0)    return JG;
     if (strncmp(code, "jge",len) == 0)   return JGE;
     if (strncmp(code, "t",len) == 0)     return TAG;
+    if (strncmp(code, "cmp",len) == 0)   return CMP;
+    if (strncmp(code, "mov",len) == 0)   return MOV;
+    if (strncmp(code, "[",len) == 0)     return QR;
+    if (strncmp(code, "]",len) == 0)     return QL;
     return INVALID_OP_ERROR;
 }
 
@@ -123,9 +127,19 @@ void getNextMnemonic(char** MnemonicStart, char** mnemonicEnd, const char* endOf
 }
 
 bool getDoubleNumber(char* mnemonicStart, double* number) {
-    char *endPtr = NULL;
+    char* endPtr = NULL;
     //cast string to double
     *number = strtod(mnemonicStart, &endPtr);
+    if (endPtr == mnemonicStart) {
+        return false;
+    }
+    return true;
+}
+
+bool getIntNumber(char* mnemonicStart, int* number) {
+    char* endPtr = NULL;
+//    printf("%s\n", mnemonicStart);
+    *number = (int)strtol(mnemonicStart, &endPtr, 10);
     if (endPtr == mnemonicStart) {
         return false;
     }
@@ -152,6 +166,25 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         *countsOfBytes += sizeof(byte);//opCode
                         *countsOfBytes += sizeof(byte);//regCode
                         return EXIT_SUCCESS;
+                    }
+                    printf("%s 1\n", *mnemonicBegin);
+
+//                    mnemonicBegin++;
+//                    printf("%s 2\n", *mnemonicBegin);
+//
+//                    mnemonicBegin--;
+//                    printf("%s 3\n", *mnemonicBegin);
+
+                    if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
+                        (*mnemonicBegin)++;
+                        int addr = 0;
+//                        printf("%s\n", *mnemonicBegin);
+                        if (getIntNumber(*mnemonicBegin, &addr)) {
+                            *countsOfBytes += 2;//"[" and "]"
+                            *countsOfBytes += sizeof(byte);//opCode
+                            *countsOfBytes += sizeof(addr);//number
+                            return EXIT_SUCCESS;
+                        }
                     }
                     fprintf(stderr, "Something went wrong with push!\n");
                     fprintf(stderr, "or error when parsing double value!\n");
@@ -184,7 +217,18 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         *countsOfBytes += sizeof(byte);//opCode
                         *countsOfBytes += sizeof(byte);//regCode
                         return EXIT_SUCCESS;
-                    }//if just pop
+                    }
+                    if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
+                        (*mnemonicBegin)++;
+                        int addr = 0;
+//                        printf("%s\n", *mnemonicBegin);
+                        if (getIntNumber(*mnemonicBegin, &addr)) {
+                            *countsOfBytes += 2;//"[" and "]"
+                            *countsOfBytes += sizeof(byte);//opCode
+                            *countsOfBytes += sizeof(addr);//number
+                            return EXIT_SUCCESS;
+                        }
+                    }
                     fprintf(stderr, "Can't identify the current register! mnemonic = %s\n", *mnemonicBegin);
                     return EXIT_FAILURE;
                 }
@@ -249,6 +293,23 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                         }
 
                         return EXIT_SUCCESS;
+                    }else if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
+                        (*mnemonicBegin)++;
+                        int addr = 0;
+                        if (getIntNumber(*mnemonicBegin, &addr)) {
+                            countsOfBytes -= sizeof(byte);
+                            byte opPUSHRAM = PUSH_RAM;
+                            isCorrectWrite = fwrite(&opPUSHRAM, sizeof(byte), 1, file);
+                            assert(isCorrectWrite == 1);
+                            isCorrectWrite = fwrite(&addr, sizeof(addr), 1, file);
+                            countsOfBytes -= sizeof(addr);
+                            assert(isCorrectWrite == 1);
+                            if (countsOfBytes < 0) {
+                                fprintf(stderr, "Something went wrong with amount of bytes!\n");
+                                return EXIT_FAILURE;
+                            }
+                            return EXIT_SUCCESS;
+                        }
                     }
                     fprintf(stderr, "Something went wrong with push!\n");
                     fprintf(stderr, "or error when parsing double value!\n");
@@ -316,6 +377,23 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                             return EXIT_FAILURE;
                         }
                         return EXIT_SUCCESS;
+                    }else if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
+                        (*mnemonicBegin)++;
+                        int addr = 0;
+                        if (getIntNumber(*mnemonicBegin, &addr)) {
+                            countsOfBytes -= sizeof(byte);
+                            byte opPUSHRAM = POP_RAM;
+                            isCorrectWrite = fwrite(&opPUSHRAM, sizeof(byte), 1, file);
+                            assert(isCorrectWrite == 1);
+                            isCorrectWrite = fwrite(&addr, sizeof(addr), 1, file);
+                            countsOfBytes -= sizeof(addr);
+                            assert(isCorrectWrite == 1);
+                            if (countsOfBytes < 0) {
+                                fprintf(stderr, "Something went wrong with amount of bytes!\n");
+                                return EXIT_FAILURE;
+                            }
+                            return EXIT_SUCCESS;
+                        }
                     }
                     fprintf(stderr, "Something went wrong with pop!\n");
                     exit(EXIT_FAILURE);

@@ -21,8 +21,15 @@ This version of the stack machine is implemented with registers rax/rbx and jmp,
 | pop rax| Pops num from the top of the stack and put it to the register rax|
 | jmp tag| Jump to the follow tag|
 | call tag| Jump to the follow tag and execute the body of function. Save return address in returnStack.|
-| ret| take address from the return stack and jump to this address |
-| jxx tag| conditional jump instructions|
+| ret| Take address from the return stack and jump to this address |
+| jxx tag| Conditional jump instructions|
+| push [addr]| Pushes value from RAM by addr into stack |
+| pop [addr]| Pops value from stack into RAM by addr |
+| move rax, [addr]| Move value from RAM by addr and  |
+| cmp num1, num2| Compare values num1 and num2 and take the result in register rzx:{ -1, 0 , 1} |
+
+
+
 
 
 Also, there are vector to help to create assembler and disassembler\
@@ -91,13 +98,14 @@ push rax
 push rbx
 out
 out
+hlt
+
 f0:
 push rax
 push rbx
 pop rax
 pop rbx
 ret
-hlt
 ```
 
 Infinity loop

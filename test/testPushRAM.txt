@@ -1,0 +1,9 @@
+push 5
+push [12]
+pop [12]
+push 10
+pop rbx
+push rbx
+mul
+out
+hlt
