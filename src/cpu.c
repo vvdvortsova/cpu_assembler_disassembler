@@ -23,7 +23,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
         double arg = 0;
         char* code = getStringOfOpCode(byteCodes[i]);
         if(code == NULL) {
-            fprintf(stderr,"Unexpected instruction in start of for!\n");
+            fprintf(stderr,"Unexpected instruction!\nNumber of byte = %zu\n", i);
             exit(EXIT_FAILURE);
         }
         double arg1 = 0;
@@ -49,7 +49,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                 i++;
                 code = getStringOfOpCode(byteCodes[i]);
                 if(code == NULL) {
-                    fprintf(stderr,"Unexpected instruction in pop!\n");
+                    fprintf(stderr,"Unexpected instruction in pop!\nNumber of byte = %zu\n", i);
                     exit(EXIT_FAILURE);
                 }
                 switch (byteCodes[i]) {
@@ -62,7 +62,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                         i++;
                         break;
                     default:
-                        fprintf(stderr,"Unexpected register after pop in binary file: %x !\n", code, byteCodes[i]);
+                        fprintf(stderr,"Unexpected register after pop in binary file!\nNumber of byte = %zu\n", i);
                         return EXIT_FAILURE;
                 }
                 addrOfRAM = *(int*)(byteCodes + i);
@@ -132,7 +132,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                 if(cpu->cpuState != FUNC_STATE) {
                     code = getStringOfOpCode(byteCodes[i]);
                     if(code == NULL) {
-                        fprintf(stderr,"Unexpected instruction! in push\n");
+                        fprintf(stderr,"Unexpected instruction! in push\nNumber of byte = %zu\n", i);
                         exit(EXIT_FAILURE);
                     }
                     switch (byteCodes[i]) {
@@ -145,7 +145,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                             i++;
                             break;
                         default:
-                            fprintf(stderr,"Unexpected register after push in binary file: %x !\n", code, byteCodes[i]);
+                            fprintf(stderr,"Unexpected register after push in binary file!\nNumber of byte = %zu\n", i);
                             return EXIT_FAILURE;
                     }
                     break;
@@ -157,7 +157,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                 if(cpu->cpuState != FUNC_STATE) {
                     code = getStringOfOpCode(byteCodes[i]);
                     if(code == NULL) {
-                        fprintf(stderr,"Unexpected instruction in pop!\n");
+                        fprintf(stderr,"Unexpected instruction in pop!\nNumber of byte = %zu\n", i);
                         exit(EXIT_FAILURE);
                     }
                     switch (byteCodes[i]) {
@@ -172,7 +172,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                             i++;
                             break;
                         default:
-                            fprintf(stderr,"Unexpected register after pop in binary file: %x !\n", code, byteCodes[i]);
+                            fprintf(stderr,"Unexpected register after pop in binary file!\nNumber of byte = %zu\n", i);
                             return EXIT_FAILURE;
                     }
                     break;
@@ -193,7 +193,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
             case MUL:
                 if(cpu->cpuState != FUNC_STATE) {
                     if(binaryOp(cpu->stack, byteCodes[i]) == EXIT_FAILURE) {
-                        fprintf(stderr,"Unexpected command: %s in binary file: %x !\n", code, byteCodes[i]);
+                        fprintf(stderr,"Unexpected command in mul in binary file\nNumber of byte = %zu\n", i);
                         return EXIT_FAILURE;
                     }
                 }
@@ -228,7 +228,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
             case IN:
                 ++i;
                 if(cpu->cpuState != FUNC_STATE) {
-                    arg1 = getDoubleFromInput("Input value pls: ");
+                    arg1 = getDoubleFromInput("Input value please: ");
                     StackPush_double(cpu->stack, arg1);
                     break;
                 }
@@ -241,7 +241,7 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                 printf("The program has finished executing!\n");
                 return EXIT_SUCCESS;
             default:
-                fprintf(stderr,"Unexpected command: %s in binary file: %x !\n", code, byteCodes[i]);
+                fprintf(stderr,"Unexpected command in binary file!\nNumber of byte = %zu\n", i);
                 return EXIT_FAILURE;
 
         }
@@ -273,7 +273,7 @@ int binaryOp(Stack_double* stack, byte code) {
             StackPush_double(stack, (arg1 / arg2));
             break;
         default:
-            fprintf(stderr,"Unexpected command: %x in binary file!\n", code);
+            fprintf(stderr,"Unexpected command: %x in binary file!\nWhen trying to calculate ADD/SUB/MUL/SQRT", code);
             return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
@@ -313,7 +313,7 @@ int conditionOp(Stack_double* stack, byte code) {
                 isOK = true;
             break;
         default:
-            fprintf(stderr,"Unexpected command: %x in binary file!\n", code);
+            fprintf(stderr,"Unexpected command: %x in binary file!\nWhen trying to calculate conditional jmp", code);
             return EXIT_FAILURE;
     }
     StackPush_double(stack, arg1);
@@ -384,7 +384,7 @@ double getDoubleFromInput(char message[]) {
     int correctInput = scanf("%lg", &number);
     while(correctInput != 1) {
         while (getchar() != EOF && getchar() != '\n' && getchar() != '\0');
-        printf("Wrong input,try again\n%s", message);
+        printf("Wrong input,try again please\n%s", message);
         correctInput = scanf("%lg", &number);
     }
     return number;

@@ -91,7 +91,7 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
             if (mnemonicEnd >= pointToTheEnd)
                 break;
         }
-        if (secondWayWithWritingToFile(&mnemonicBegin, &mnemonicEnd, pointToTheEnd, fileByte, tags, &countsOfBytes)!= 0) {
+        if (secondWayWithWritingToFile(&mnemonicBegin, &mnemonicEnd, pointToTheEnd, fileByte, tags)!= 0) {
             fprintf(stderr, "Invalid instruction in assembler function!\n");
             fprintf(stderr, "%s\n",mnemonicBegin);
             exit(EXIT_FAILURE);
@@ -139,7 +139,8 @@ bool getIntNumber(char* mnemonicStart, int* number) {
     return true;
 }
 
-int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, vector* tags, size_t* countsOfBytes) {
+int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd,
+        char* endOfFile, vector* tags, size_t* countsOfBytes) {
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
     byte rgCode;
@@ -164,8 +165,8 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         }
                     }
                 }
-                printf("Unexpected register\n");
-                break;
+                fprintf(stderr,"Unexpected register in MOV\nMnemonic = %s\n", *mnemonicBegin);
+                exit(EXIT_FAILURE);
             case PUSH:
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                 double number;
@@ -192,7 +193,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         }
                     }
                     fprintf(stderr, "Something went wrong with push!\n");
-                    fprintf(stderr, "or error when parsing double value!\n");
+                    fprintf(stderr, "or error when parsing double value!\nMnemonic = %s\n", *mnemonicBegin);
                     exit(EXIT_FAILURE);
                 }
             case JE:
@@ -207,7 +208,6 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);//get the name of tag function
                 *countsOfBytes += sizeof(int);//number of bytes
                 return EXIT_SUCCESS;
-
             case POP:
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
                     *countsOfBytes += sizeof(byte);//opCode
@@ -231,7 +231,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                             return EXIT_SUCCESS;
                         }
                     }
-                    fprintf(stderr, "Can't identify the current register! mnemonic = %s\n", *mnemonicBegin);
+                    fprintf(stderr, "Can't identify the current register!\nMnemonic = %s\n", *mnemonicBegin);
                     return EXIT_FAILURE;
                 }
             default:
@@ -250,12 +250,12 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
             vectorAdd(tags, item);
             return EXIT_SUCCESS;
         }
-        fprintf(stderr, "Can't identify the current instruction! mnemonic = %s\n", *mnemonicBegin);
+        fprintf(stderr, "Can't identify the current instruction!\nMnemonic = %s\n", *mnemonicBegin);
         exit(EXIT_FAILURE);
     }
 }
 
-int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes) {
+int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags) {
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
     byte rgCode;
@@ -269,46 +269,29 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
                 if (rgCode != INVALID_REG_ERROR) {
                     if (writeToFileTWOValues(MOV, rgCode, file) != EXIT_SUCCESS) {
-                        fprintf(stderr, "Something went wrong with writing pop!\n");
+                        fprintf(stderr, "Something went wrong with writing MOV!\n");
                         exit(EXIT_FAILURE);
                     }
-                    countsOfBytes -= sizeof(byte);//opCode
-                    countsOfBytes -= sizeof(byte);//rgCode
-                    if (countsOfBytes < 0) {
-                        fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                        return EXIT_FAILURE;
-                    }
+
                     getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                     (*mnemonicBegin)++;
                     int addr = 0;
                     if (getIntNumber(*mnemonicBegin, &addr)) {
                         isCorrectWrite = fwrite(&addr, sizeof(addr), 1, file);
-                        countsOfBytes -= sizeof(addr);
                         assert(isCorrectWrite == 1);
-                        if (countsOfBytes < 0) {
-                            fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                            return EXIT_FAILURE;
-                        }
                         return EXIT_SUCCESS;
                     }
-
                 }
-                printf("Unexpected register\n");
-                break;
+                fprintf(stderr,"Unexpected register in MOV\nMnemonic = %s\n", *mnemonicBegin);
+                exit(EXIT_FAILURE);
             case PUSH:
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                 double number;
                 if (getDoubleNumber(*mnemonicBegin, &number)) {
-                    countsOfBytes -= sizeof(byte);
                     isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
                     assert(isCorrectWrite == 1);
                     isCorrectWrite = fwrite(&number, sizeof(number), 1, file);
-                    countsOfBytes -= sizeof(number);
                     assert(isCorrectWrite == 1);
-                    if (countsOfBytes < 0) {
-                        fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                        return EXIT_FAILURE;
-                    }
                     return EXIT_SUCCESS;
                 } else {
                     lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
@@ -318,29 +301,16 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                             fprintf(stderr, "Something went wrong with writing pop!\n");
                             exit(EXIT_FAILURE);
                         }
-                        countsOfBytes -= sizeof(byte);//opCode
-                        countsOfBytes -= sizeof(byte);//rgCode
-                        if (countsOfBytes < 0) {
-                            fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                            return EXIT_FAILURE;
-                        }
-
                         return EXIT_SUCCESS;
                     }else if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
                         (*mnemonicBegin)++;
                         int addr = 0;
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-                            countsOfBytes -= sizeof(byte);
                             byte opPUSHRAM = PUSH_RAM;
                             isCorrectWrite = fwrite(&opPUSHRAM, sizeof(byte), 1, file);
                             assert(isCorrectWrite == 1);
                             isCorrectWrite = fwrite(&addr, sizeof(addr), 1, file);
-                            countsOfBytes -= sizeof(addr);
                             assert(isCorrectWrite == 1);
-                            if (countsOfBytes < 0) {
-                                fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                                return EXIT_FAILURE;
-                            }
                             return EXIT_SUCCESS;
                         }
                     }
@@ -370,12 +340,6 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                         int pos = ((struct tag *) vectorGet(tags, i))->position;
                         isCorrectWrite = fwrite(&pos, sizeof(int), 1, file);
                         assert(isCorrectWrite == 1);
-                        countsOfBytes -= sizeof(byte);//opCode
-                        countsOfBytes -= sizeof(int);//tag address
-                        if (countsOfBytes < 0) {
-                            fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                            return EXIT_FAILURE;
-                        }
                         free(temp);
                         return EXIT_SUCCESS;
                     }
@@ -384,11 +348,6 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 return EXIT_FAILURE;
             case POP:
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
-                    countsOfBytes -= sizeof(byte);//opCode
-                    if (countsOfBytes < 0) {
-                        fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                        return EXIT_FAILURE;
-                    }
                     isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
                     assert(isCorrectWrite == 1);
                     return EXIT_SUCCESS;
@@ -402,28 +361,16 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                             fprintf(stderr, "Something went wrong with writing pop!\n");
                             exit(EXIT_FAILURE);
                         }
-                        countsOfBytes -= sizeof(byte);//opCode
-                        countsOfBytes -= sizeof(byte);//rgCode
-                        if (countsOfBytes < 0) {
-                            fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                            return EXIT_FAILURE;
-                        }
                         return EXIT_SUCCESS;
                     }else if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
                         (*mnemonicBegin)++;
                         int addr = 0;
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-                            countsOfBytes -= sizeof(byte);
                             byte opPUSHRAM = POP_RAM;
                             isCorrectWrite = fwrite(&opPUSHRAM, sizeof(byte), 1, file);
                             assert(isCorrectWrite == 1);
                             isCorrectWrite = fwrite(&addr, sizeof(addr), 1, file);
-                            countsOfBytes -= sizeof(addr);
                             assert(isCorrectWrite == 1);
-                            if (countsOfBytes < 0) {
-                                fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                                return EXIT_FAILURE;
-                            }
                             return EXIT_SUCCESS;
                         }
                     }
@@ -431,17 +378,12 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                     exit(EXIT_FAILURE);
                 }//if just pop
             default:
-                countsOfBytes -= sizeof(byte);//opCode
-                if (countsOfBytes < 0) {
-                    fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                    return EXIT_FAILURE;
-                }
                 isCorrectWrite = fwrite(&opCode, sizeof(byte), 1, file);
                 assert(isCorrectWrite == 1);
                 return EXIT_SUCCESS;
         }
     }else{
-        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0){//TODO
+        if(strncmp(mnemonicBegin[0],"f",1) == 0 || strncmp(mnemonicBegin[0],"t",1) == 0) {
             //write code
             lenOfMnemonic = (*mnemonicEnd - *mnemonicBegin);
             char *temp = calloc(1, sizeof(temp));
@@ -458,11 +400,6 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                     byte pos = getOpCodeWithStringOfCode(&tempElem[0],1);
                     isCorrectWrite = fwrite(&pos, sizeof(byte), 1, file);
                     assert(isCorrectWrite == 1);
-                    countsOfBytes -= sizeof(byte);//opCode of f
-                    if (countsOfBytes < 0) {
-                        fprintf(stderr, "Something went wrong with amount of bytes!\n");
-                        return EXIT_FAILURE;
-                    }
                     free(temp);
                     return EXIT_SUCCESS;
                 }
@@ -471,7 +408,7 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
             fprintf(stderr, "Can't find key in tags arr!\n");
             return EXIT_FAILURE;
         }
-        fprintf(stderr, "Can't identify the current instruction! mnemonic = %s\n", *mnemonicBegin);
+        fprintf(stderr, "Can't identify the current instruction!\nMnemonic = %s\n", *mnemonicBegin);
         exit(EXIT_FAILURE);
     }
 }

@@ -104,7 +104,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
  * @param countsOfBytes
  * @return              exit_code
  */
-int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE* file, vector* tags, size_t* countsOfBytes);
+int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags);
 
 #endif //CPU_ASSEMBLER_DISASSEMBLER_ASM_H
 
