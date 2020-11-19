@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['initcpu',['initCPU',['../cpu_8c.html#a32e9b670b67d9624cb6b8d91fab09459',1,'initCPU(CPU *cpu):&#160;cpu.c'],['../cpu_8h.html#a32e9b670b67d9624cb6b8d91fab09459',1,'initCPU(CPU *cpu):&#160;cpu.c']]]
+  ['hash_5fcheck',['HASH_CHECK',['../stack_8h.html#a015f881aa1ea5e15c4aacfb69fdb3b1d',1,'stack.h']]]
 ];

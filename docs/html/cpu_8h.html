@@ -80,6 +80,7 @@ $(function() {
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="all__possible__stack_8h_source.html">stack_lib/all_possible_stack.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="asm__utils_8h_source.html">asm_utils.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="asm__ram_8h_source.html">asm_ram.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for cpu.h:</div>
 <div class="dyncontent">
@@ -136,8 +137,8 @@ Functions</h2></td></tr>
 <tr class="separator:a32e9b670b67d9624cb6b8d91fab09459"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3c90aa120fcb1ea3f5f93b5aeffa8d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8h.html#ac3c90aa120fcb1ea3f5f93b5aeffa8d1">destructorCPU</a> (<a class="el" href="struct_c_p_u.html">CPU</a> *cpu)</td></tr>
 <tr class="separator:ac3c90aa120fcb1ea3f5f93b5aeffa8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05e8aaea972cbf7870b38d8932ce495c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8h.html#a05e8aaea972cbf7870b38d8932ce495c">processMachine</a> (char *byteCodes, size_t size, <a class="el" href="struct_c_p_u.html">CPU</a> *cpu)</td></tr>
-<tr class="separator:a05e8aaea972cbf7870b38d8932ce495c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a128680a2f223fc27ebf5ef296aa1f4ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8h.html#a128680a2f223fc27ebf5ef296aa1f4ed">processMachine</a> (char *byteCodes, size_t size, <a class="el" href="struct_c_p_u.html">CPU</a> *cpu, <a class="el" href="struct_r_a_m.html">RAM</a> *ram)</td></tr>
+<tr class="separator:a128680a2f223fc27ebf5ef296aa1f4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cdeda44636c5bfd727f15437f4af2cb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8h.html#a5cdeda44636c5bfd727f15437f4af2cb">getDoubleFromInput</a> (char message[])</td></tr>
 <tr class="memdesc:a5cdeda44636c5bfd727f15437f4af2cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get double values from input stream.  <a href="#a5cdeda44636c5bfd727f15437f4af2cb">More...</a><br /></td></tr>
 <tr class="separator:a5cdeda44636c5bfd727f15437f4af2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -334,8 +335,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>areEqual</b> (double 
 
 </div>
 </div>
-<a id="a05e8aaea972cbf7870b38d8932ce495c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05e8aaea972cbf7870b38d8932ce495c">&#9670;&nbsp;</a></span>processMachine()</h2>
+<a id="a128680a2f223fc27ebf5ef296aa1f4ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a128680a2f223fc27ebf5ef296aa1f4ed">&#9670;&nbsp;</a></span>processMachine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -356,7 +357,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>areEqual</b> (double 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="struct_c_p_u.html">CPU</a> *&#160;</td>
-          <td class="paramname"><em>cpu</em>&#160;</td>
+          <td class="paramname"><em>cpu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_r_a_m.html">RAM</a> *&#160;</td>
+          <td class="paramname"><em>ram</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['printfvector',['printfVector',['../asm__utils_8c.html#a288285b12175e04cedff87a4c70f737e',1,'printfVector(vector *v):&#160;asm_utils.c'],['../asm__utils_8h.html#a288285b12175e04cedff87a4c70f737e',1,'printfVector(vector *v):&#160;asm_utils.c']]],
-  ['processmachine',['processMachine',['../cpu_8c.html#a05e8aaea972cbf7870b38d8932ce495c',1,'processMachine(char *byteCodes, size_t size, CPU *cpu):&#160;cpu.c'],['../cpu_8h.html#a05e8aaea972cbf7870b38d8932ce495c',1,'processMachine(char *byteCodes, size_t size, CPU *cpu):&#160;cpu.c']]]
+  ['initcpu',['initCPU',['../cpu_8c.html#a32e9b670b67d9624cb6b8d91fab09459',1,'initCPU(CPU *cpu):&#160;cpu.c'],['../cpu_8h.html#a32e9b670b67d9624cb6b8d91fab09459',1,'initCPU(CPU *cpu):&#160;cpu.c']]],
+  ['initram',['initRAM',['../asm__ram_8c.html#abcc4630cf7563933400307a79e5d8cf4',1,'initRAM(RAM *ram, int sizeOfRAM):&#160;asm_ram.c'],['../asm__ram_8h.html#abcc4630cf7563933400307a79e5d8cf4',1,'initRAM(RAM *ram, int sizeOfRAM):&#160;asm_ram.c']]]
 ];

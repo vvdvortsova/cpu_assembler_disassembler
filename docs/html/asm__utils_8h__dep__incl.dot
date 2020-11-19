@@ -8,13 +8,18 @@ digraph "src/asm_utils.h"
   Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 [label="src/asm.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$asm_8c.html",tooltip="Definitions of methods for assembler. "];
   Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node8 [label="src/asm_utils.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$asm__utils_8c.html",tooltip="Helper methods for asm, disasm, cpu. "];
-  Node5 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node9 [label="src/cpu.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8h.html",tooltip="Headers for a stack machine. "];
-  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node10 [label="src/cpu.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8c.html",tooltip="Describes a stack machine. "];
-  Node5 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 [label="src/disasm.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$disasm_8h.html",tooltip="Disassembler methods. "];
-  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node12 [label="src/disasm.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$disasm_8c.html",tooltip="Disassembler methods. "];
+  Node8 [label="src/asm_ram.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$asm__ram_8h.html",tooltip="Method describes RAM and methods for controller. "];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="src/asm_ram.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$asm__ram_8c.html",tooltip="Method describes RAM and methods for controller. "];
+  Node8 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="src/cpu.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8h.html",tooltip="Headers for a stack machine. "];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="src/cpu.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cpu_8c.html",tooltip="Describes a stack machine. "];
+  Node5 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="src/asm_utils.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$asm__utils_8c.html",tooltip="Helper methods for asm, disasm, cpu. "];
+  Node5 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="src/disasm.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$disasm_8h.html",tooltip="Disassembler methods. "];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="src/disasm.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$disasm_8c.html",tooltip="Disassembler methods. "];
 }

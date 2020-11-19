@@ -119,14 +119,16 @@ Functions</h2></td></tr>
 <tr class="separator:a95c453976a5265a52920b69bb2ca064c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ababe20eded73ddf635f9b840c0b10638"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#ababe20eded73ddf635f9b840c0b10638">getDoubleNumber</a> (char *mnemonicStart, double *number)</td></tr>
 <tr class="separator:ababe20eded73ddf635f9b840c0b10638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a544936bbf8bd8588bdd3e6521df6d19a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#a544936bbf8bd8588bdd3e6521df6d19a">getIntNumber</a> (char *mnemonicStart, int *number)</td></tr>
+<tr class="separator:a544936bbf8bd8588bdd3e6521df6d19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a697354994bdbdb0d11558b3fdcc7bcd1"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#a697354994bdbdb0d11558b3fdcc7bcd1">getRegistersByMnemonic</a> (const char *code, size_t len)</td></tr>
 <tr class="separator:a697354994bdbdb0d11558b3fdcc7bcd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83cc83ededb0e4aa6507e9a93e2214d2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#a83cc83ededb0e4aa6507e9a93e2214d2">writeToFileTWOValues</a> (byte opCode, byte rgCode, FILE *file)</td></tr>
 <tr class="separator:a83cc83ededb0e4aa6507e9a93e2214d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a816a235d28cd8049c7e1d7a6f4d006ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#a816a235d28cd8049c7e1d7a6f4d006ae">firstWayWithoutWritingInFile</a> (char **mnemonicBegin, char **mnemonicEnd, char *endOfFile, <a class="el" href="structvector.html">vector</a> *tags, size_t *countsOfBytes)</td></tr>
 <tr class="separator:a816a235d28cd8049c7e1d7a6f4d006ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a632c9723caf805fbc8fd8fc249a0fa2a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#a632c9723caf805fbc8fd8fc249a0fa2a">secondWayWithWritingToFile</a> (char **mnemonicBegin, char **mnemonicEnd, char *endOfFile, FILE *file, <a class="el" href="structvector.html">vector</a> *tags, size_t *countsOfBytes)</td></tr>
-<tr class="separator:a632c9723caf805fbc8fd8fc249a0fa2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a0a0763a01d4cad7343c8395d8ca26"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asm_8h.html#ad2a0a0763a01d4cad7343c8395d8ca26">secondWayWithWritingToFile</a> (char **mnemonicBegin, char **mnemonicEnd, char *endOfFile, FILE *file, <a class="el" href="structvector.html">vector</a> *tags)</td></tr>
+<tr class="separator:ad2a0a0763a01d4cad7343c8395d8ca26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definitions of methods for assembler. </p>
@@ -277,6 +279,42 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a544936bbf8bd8588bdd3e6521df6d19a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a544936bbf8bd8588bdd3e6521df6d19a">&#9670;&nbsp;</a></span>getIntNumber()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getIntNumber </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>mnemonicStart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>number</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Method return int value. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mnemonicStart</td><td></td></tr>
+    <tr><td class="paramname">number</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>if cast is success then true </dd></dl>
+
+</div>
+</div>
 <a id="a95c453976a5265a52920b69bb2ca064c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a95c453976a5265a52920b69bb2ca064c">&#9670;&nbsp;</a></span>getNextMnemonic()</h2>
 
@@ -391,8 +429,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a632c9723caf805fbc8fd8fc249a0fa2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a632c9723caf805fbc8fd8fc249a0fa2a">&#9670;&nbsp;</a></span>secondWayWithWritingToFile()</h2>
+<a id="ad2a0a0763a01d4cad7343c8395d8ca26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2a0a0763a01d4cad7343c8395d8ca26">&#9670;&nbsp;</a></span>secondWayWithWritingToFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -425,13 +463,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structvector.html">vector</a> *&#160;</td>
-          <td class="paramname"><em>tags</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>countsOfBytes</em>&#160;</td>
+          <td class="paramname"><em>tags</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

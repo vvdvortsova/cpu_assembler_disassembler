@@ -38,4 +38,7 @@ digraph "src/cpu.c"
   Node14 [label="vector.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$vector_8h.html"];
   Node14 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node14 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="asm_ram.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$asm__ram_8h.html",tooltip="Method describes RAM and methods for controller. "];
+  Node15 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

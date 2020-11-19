@@ -86,8 +86,8 @@ Functions</h2></td></tr>
 <tr class="separator:a32e9b670b67d9624cb6b8d91fab09459"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3c90aa120fcb1ea3f5f93b5aeffa8d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8c.html#ac3c90aa120fcb1ea3f5f93b5aeffa8d1">destructorCPU</a> (<a class="el" href="struct_c_p_u.html">CPU</a> *cpu)</td></tr>
 <tr class="separator:ac3c90aa120fcb1ea3f5f93b5aeffa8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05e8aaea972cbf7870b38d8932ce495c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8c.html#a05e8aaea972cbf7870b38d8932ce495c">processMachine</a> (char *byteCodes, size_t size, <a class="el" href="struct_c_p_u.html">CPU</a> *cpu)</td></tr>
-<tr class="separator:a05e8aaea972cbf7870b38d8932ce495c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a128680a2f223fc27ebf5ef296aa1f4ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpu_8c.html#a128680a2f223fc27ebf5ef296aa1f4ed">processMachine</a> (char *byteCodes, size_t size, <a class="el" href="struct_c_p_u.html">CPU</a> *cpu, <a class="el" href="struct_r_a_m.html">RAM</a> *ram)</td></tr>
+<tr class="separator:a128680a2f223fc27ebf5ef296aa1f4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93a8ad5c22ff498debd4c4e93d299b9d"><td class="memItemLeft" align="right" valign="top"><a id="a93a8ad5c22ff498debd4c4e93d299b9d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>binaryOp</b> (Stack_double *stack, byte code)</td></tr>
 <tr class="separator:a93a8ad5c22ff498debd4c4e93d299b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,8 +266,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 
 </div>
 </div>
-<a id="a05e8aaea972cbf7870b38d8932ce495c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05e8aaea972cbf7870b38d8932ce495c">&#9670;&nbsp;</a></span>processMachine()</h2>
+<a id="a128680a2f223fc27ebf5ef296aa1f4ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a128680a2f223fc27ebf5ef296aa1f4ed">&#9670;&nbsp;</a></span>processMachine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +288,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="struct_c_p_u.html">CPU</a> *&#160;</td>
-          <td class="paramname"><em>cpu</em>&#160;</td>
+          <td class="paramname"><em>cpu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_r_a_m.html">RAM</a> *&#160;</td>
+          <td class="paramname"><em>ram</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
