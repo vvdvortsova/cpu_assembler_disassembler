@@ -48,7 +48,6 @@ typedef unsigned char byte;
 #define TAG         0b00101101u
 #define PUSH_RAM    0b00101110u
 #define POP_RAM     0b00101111u
-#define CMP         0b00110000u
 #define MOV         0b00110011u
 
 

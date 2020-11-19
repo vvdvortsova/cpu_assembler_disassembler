@@ -29,7 +29,6 @@ byte getOpCodeWithStringOfCode(const char* code, size_t len) {
     if (strncmp(code, "jg",len) == 0)    return JG;
     if (strncmp(code, "jge",len) == 0)   return JGE;
     if (strncmp(code, "t",len) == 0)     return TAG;
-    if (strncmp(code, "cmp",len) == 0)   return CMP;
     if (strncmp(code, "mov",len) == 0)   return MOV;
     return INVALID_OP_ERROR;
 }
@@ -80,8 +79,6 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
             mnemonicEnd++;
         mnemonicBegin = mnemonicEnd;
     }
-//    printf("after first way\n");
-//    printfVectorWithTags(tags);
 
     pointToTheEnd = disasmCode + size;
     mnemonicBegin = disasmCode;
@@ -103,8 +100,7 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
             mnemonicEnd++;
         mnemonicBegin = mnemonicEnd;
     }
-//    printf("after second way\n");
-//    printfVectorWithTags(tags);
+
 
     vectorFree(tags);
     free(disasmCode);
@@ -136,7 +132,6 @@ bool getDoubleNumber(char* mnemonicStart, double* number) {
 
 bool getIntNumber(char* mnemonicStart, int* number) {
     char* endPtr = NULL;
-//    printf("%s\n", mnemonicStart);
     *number = (int)strtol(mnemonicStart, &endPtr, 10);
     if (endPtr == mnemonicStart) {
         return false;
@@ -150,9 +145,6 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
     byte rgCode;
     if (opCode != INVALID_OP_ERROR) {
         switch (opCode) {
-            case CMP:
-
-                break;
             case MOV:
                 // findReg
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
@@ -165,7 +157,6 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                     if (strncmp(mnemonicBegin[0],"[",1) == 0) {//call ram
                         (*mnemonicBegin)++;
                         int addr = 0;
-//                        printf("%s\n", *mnemonicBegin);
                         if (getIntNumber(*mnemonicBegin, &addr)) {
                             *countsOfBytes += sizeof(byte);//opCode
                             *countsOfBytes += sizeof(addr);//number
@@ -190,14 +181,11 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         *countsOfBytes += sizeof(byte);//regCode
                         return EXIT_SUCCESS;
                     }
-                    printf("%s 1\n", *mnemonicBegin);
 
                     if (strncmp(mnemonicBegin[0],"[",1) == 0) {//call ram
                         (*mnemonicBegin)++;
                         int addr = 0;
-//                        printf("%s\n", *mnemonicBegin);
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-//                            *countsOfBytes += 2;//"[" and "]"
                             *countsOfBytes += sizeof(byte);//opCode
                             *countsOfBytes += sizeof(addr);//number
                             return EXIT_SUCCESS;
@@ -221,13 +209,11 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                 return EXIT_SUCCESS;
 
             case POP:
-//                printf("mnemonicEnd[0] = %s\n", *(mnemonicEnd));
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
                     *countsOfBytes += sizeof(byte);//opCode
                     return EXIT_SUCCESS;
                 }
                 if (strncmp(mnemonicEnd[0], "\n", 1) != 0) {//means that is register
-//                    printf("Зашел! mnemonicEnd[0] = %s\n", *(mnemonicEnd));
                     getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
                     lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
                     rgCode = getRegistersByMnemonic(*mnemonicBegin, lenOfMnemonic);
@@ -239,9 +225,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                     if (strncmp(mnemonicBegin[0],"[",1) == 0){//call ram
                         (*mnemonicBegin)++;
                         int addr = 0;
-//                        printf("%s\n", *mnemonicBegin);
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-//                            *countsOfBytes += 2;//"[" and "]"
                             *countsOfBytes += sizeof(byte);//opCode
                             *countsOfBytes += sizeof(addr);//number
                             return EXIT_SUCCESS;
@@ -272,8 +256,6 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
 }
 
 int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes) {
-//    printf("in second way\n");
-//    printfVectorWithTags(tags);
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
     byte rgCode;
@@ -401,7 +383,6 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
                 fprintf(stderr, "Can't find key in tags arr!\n");
                 return EXIT_FAILURE;
             case POP:
-//                printf("mnemonicEnd[0] = %s\n",mnemonicEnd[0]);
                 if (strncmp(mnemonicEnd[0], "\n", 1) == 0) {
                     countsOfBytes -= sizeof(byte);//opCode
                     if (countsOfBytes < 0) {
@@ -468,7 +449,6 @@ int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* e
             for (int i = 0; i < tags->total; ++i) {
                 char tempElem[90] = "";
                 struct tag* tmpTag = (struct tag*) vectorGet(tags, i);
-//                printf("vectorGet(tags, %d).name = %s\n",i, tmpTag->name);
                 strcpy(tempElem, tmpTag->name);
 
                 if (strncmp(temp, tempElem, lenOfMnemonic - 1) == 0) {

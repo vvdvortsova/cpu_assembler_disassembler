@@ -1,3 +1,9 @@
+/**
+* @file         asm_ram.c
+* @brief        Method describes RAM and methods for controller
+* @author       Dvortsova Varvara BSE182 HSE
+* @include      asm_ram.h
+*/
 #include "asm_ram.h"
 
 int initRAM(RAM* ram, int sizeOfRAM) {

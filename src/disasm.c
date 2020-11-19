@@ -84,7 +84,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                     strcpy(copy, elem->name);
                     copy[strlen(copy) - 2] = '\0';
                     fprintf(file,"%s\n", copy);
-                } else{
+                } else {
                     fprintf(stderr,"Can't find func name!:(\n");
                     printfVectorWithTags(tags);
                 }
@@ -142,7 +142,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
 }
 
 
-void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int* countOfFunction, int* countOfBytes){
+void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int* countOfFunction, int* countOfBytes) {
     int i = 0;
     int callPos = 0;
     for (i = 0; i < size;) {
@@ -160,7 +160,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
             case F:
                 callPos = i;
                 i++;// because of i start from zero
-                if(findFunctionByAddressInVector(tags, i, &index) != EXIT_SUCCESS){
+                if(findFunctionByAddressInVector(tags, i, &index) != EXIT_SUCCESS) {
                     //if we did not find this function in array
                     struct tag* temp = calloc(1, sizeof(struct tag));
                     temp->position = i;
@@ -183,7 +183,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                 callPos = i;
                 i++;
                 funcArg = (int)(byteCodes[i]);
-                if(findFunctionByAddressInVector(tags, funcArg, &index) != EXIT_SUCCESS){
+                if(findFunctionByAddressInVector(tags, funcArg, &index) != EXIT_SUCCESS) {
                     //if we did not find this function in array
                     struct tag* temp = calloc(1, sizeof(struct tag));
                     temp->position = funcArg;
@@ -207,7 +207,7 @@ void disassembleFirstWayToReadTags(char* byteCodes, int size, vector* tags, int*
                 i++;//mov
                 i++;//reg
                 addr = *(int*)(byteCodes + i);
-                i += sizeof(addr);
+                i += sizeof(addr);//addr
                 break;
             case POP_RAM:
             case PUSH_RAM:

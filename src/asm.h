@@ -56,6 +56,14 @@ void getNextMnemonic(char** MnemonicStart, char**  mnemonicEnd, const char* endO
 bool getDoubleNumber(char*  mnemonicStart, double* number);
 
 /**
+ * Method return int value.
+ * @param mnemonicStart
+ * @param number
+ * @return if cast is success then true
+ */
+bool getIntNumber(char* mnemonicStart, int* number);
+
+/**
  * Method returns opCode of register by mnemonics.
  * @param code
  * @param len

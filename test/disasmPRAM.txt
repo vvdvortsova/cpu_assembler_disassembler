@@ -1,5 +1,5 @@
 call f0
-pop [0]
+push [0]
 out
 push [1]
 out

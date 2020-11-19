@@ -35,7 +35,6 @@ const char* getStringOfOpCode(byte code) {
         case TAG:  return "t";
         case PUSH_RAM: return "push";
         case POP_RAM:  return "pop";
-        case CMP:      return "cmp";
         case MOV:      return "mov";
         default:       return NULL;
     }
@@ -43,7 +42,7 @@ const char* getStringOfOpCode(byte code) {
 
 void printfVectorWithTags(vector* v) {
     printf("your vector %p\n",(void*)v);
-    struct tag* a2 = calloc(1, sizeof(struct tag));
+    struct tag* a2 = NULL;
     for (int i = 0; i < v->total; ++i) {
         a2 = (struct tag*)vectorGet(v, i);
         printf("pos = %d fname = %s\n", a2->position, a2->name);
@@ -51,14 +50,11 @@ void printfVectorWithTags(vector* v) {
 }
 
 int findFunctionByAddressInVector(vector* v, int addres, int* index) {
-//    printf("your vector %p\n",(void*)v);
-    struct tag* a2 = calloc(1, sizeof(struct tag));
+    struct tag* a2 = NULL;
     for (int i = 0; i < v->total; ++i) {
         a2 = (struct tag*)vectorGet(v, i);
-//        printf("pos = %d adr = %d\n",a2->position,addres);
         if(a2->position == addres){
             *index = i;
-//            printf("true! index = %d\n",*index);
             return EXIT_SUCCESS;
         }
     }
