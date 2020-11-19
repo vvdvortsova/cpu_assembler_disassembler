@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include "stack_lib/all_possible_stack.h"
 #include "asm_utils.h"
+#include "asm_ram.h"
 
 #define EPS 1e-9
 typedef double register_type;
@@ -60,8 +61,7 @@ int destructorCPU(CPU* cpu);
  * @param cpu
  * @return exit_code
  */
-int processMachine(char* byteCodes, size_t size, CPU* cpu);
-
+int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram);
 /**
 * @brief                 Get double values from input stream.
 * @param[in]  message[]  The message for user

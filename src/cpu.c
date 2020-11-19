@@ -18,8 +18,7 @@ int destructorCPU(CPU* cpu) {
     return EXIT_SUCCESS;
 }
 
-
-int processMachine(char* byteCodes, size_t size, CPU* cpu) {
+int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
     for (size_t i = 0; i < size;) {
         double arg = 0;
         char* code = getStringOfOpCode(byteCodes[i]);
@@ -28,8 +27,49 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu) {
             exit(EXIT_FAILURE);
         }
         double arg1 = 0;
+        double elem = 0;
         int addressOfFunction = 0;
+        int addrOfRAM = 0;
         switch(byteCodes[i]) {
+            case POP_RAM:
+                i++;
+                addrOfRAM = *(int*)(byteCodes + i);
+                elem = StackPop_double(cpu->stack);
+                writeValueInRamByAddress(ram, addrOfRAM, elem);
+                i += sizeof(addrOfRAM);
+                break;
+            case PUSH_RAM:
+                i++;
+                addrOfRAM = *(int*)(byteCodes + i);
+                elem = getValueFromRam(ram, addrOfRAM);
+                StackPush_double(cpu->stack, elem);
+                i += sizeof(addrOfRAM);
+                break;
+            case MOV:
+                i++;
+                code = getStringOfOpCode(byteCodes[i]);
+                if(code == NULL) {
+                    fprintf(stderr,"Unexpected instruction in pop!\n");
+                    exit(EXIT_FAILURE);
+                }
+                switch (byteCodes[i]) {
+                    case RAX:
+                        elem = cpu->rax;
+                        i++;
+                        break;
+                    case RBX:
+                        elem = cpu->rbx;
+                        i++;
+                        break;
+                    default:
+                        fprintf(stderr,"Unexpected register after pop in binary file: %x !\n", code, byteCodes[i]);
+                        return EXIT_FAILURE;
+                }
+                addrOfRAM = *(int*)(byteCodes + i);
+                writeValueInRamByAddress(ram, addrOfRAM, elem);
+                i += sizeof(addrOfRAM);
+                break;
+
             case TAG:
                 i++;
                 break;
@@ -310,15 +350,21 @@ int countResult(char* fileName) {
     char* byteCodes = getBuffer(fileName, &size, "rb");
     Stack_double stack;
     Stack_double returnStack;
+    RAM ram;
+    if(initRAM(&ram, 256) == EXIT_FAILURE){
+        printf("Can't initiate ram!\n");
+        exit(EXIT_FAILURE);
+    }
     CPU cpu = {&stack, &returnStack, 0, 0};
     initCPU(&cpu);
     cpu.cpuState = SIMPLE_STATE;
-    if(processMachine(byteCodes, size, &cpu) != EXIT_SUCCESS) {
+    if(processMachine(byteCodes, size, &cpu, &ram) != EXIT_SUCCESS) {
         fprintf(stderr,"The program has not finished executing!\n");
         return EXIT_FAILURE;
     }
 
     destructorCPU(&cpu);
+    destroyRAM(&ram);
     return EXIT_SUCCESS;
 }
 

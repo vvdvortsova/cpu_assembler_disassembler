@@ -81,7 +81,7 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
         mnemonicBegin = mnemonicEnd;
     }
 //    printf("after first way\n");
-//    printfVector(tags);
+//    printfVectorWithTags(tags);
 
     pointToTheEnd = disasmCode + size;
     mnemonicBegin = disasmCode;
@@ -104,7 +104,7 @@ int assembler(char* fileWithMnemonics, char* fileWithByteCode) {
         mnemonicBegin = mnemonicEnd;
     }
 //    printf("after second way\n");
-//    printfVector(tags);
+//    printfVectorWithTags(tags);
 
     vectorFree(tags);
     free(disasmCode);
@@ -150,6 +150,9 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
     byte rgCode;
     if (opCode != INVALID_OP_ERROR) {
         switch (opCode) {
+            case CMP:
+
+                break;
             case MOV:
                 // findReg
                 getNextMnemonic(mnemonicBegin, mnemonicEnd, endOfFile);
@@ -164,7 +167,6 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         int addr = 0;
 //                        printf("%s\n", *mnemonicBegin);
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-                            *countsOfBytes += 2;//"[" and "]"
                             *countsOfBytes += sizeof(byte);//opCode
                             *countsOfBytes += sizeof(addr);//number
                             return EXIT_SUCCESS;
@@ -195,7 +197,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         int addr = 0;
 //                        printf("%s\n", *mnemonicBegin);
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-                            *countsOfBytes += 2;//"[" and "]"
+//                            *countsOfBytes += 2;//"[" and "]"
                             *countsOfBytes += sizeof(byte);//opCode
                             *countsOfBytes += sizeof(addr);//number
                             return EXIT_SUCCESS;
@@ -239,7 +241,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
                         int addr = 0;
 //                        printf("%s\n", *mnemonicBegin);
                         if (getIntNumber(*mnemonicBegin, &addr)) {
-                            *countsOfBytes += 2;//"[" and "]"
+//                            *countsOfBytes += 2;//"[" and "]"
                             *countsOfBytes += sizeof(byte);//opCode
                             *countsOfBytes += sizeof(addr);//number
                             return EXIT_SUCCESS;
@@ -271,7 +273,7 @@ int firstWayWithoutWritingInFile(char** mnemonicBegin, char** mnemonicEnd, char*
 
 int secondWayWithWritingToFile(char** mnemonicBegin, char** mnemonicEnd, char* endOfFile, FILE *file, vector* tags, size_t* countsOfBytes) {
 //    printf("in second way\n");
-//    printfVector(tags);
+//    printfVectorWithTags(tags);
     size_t lenOfMnemonic = *mnemonicEnd - *mnemonicBegin;
     byte opCode = getOpCodeWithStringOfCode(*mnemonicBegin, lenOfMnemonic);
     byte rgCode;

@@ -37,7 +37,7 @@ void vectorSet(vector* v, int index, void* item) {
         v->items[index] = item;
 }
 
-void *vectorGet(vector* v, int index) {
+void* vectorGet(vector* v, int index) {
     if (index >= 0 && index < v->total)
         return v->items[index];
     return NULL;
@@ -46,16 +46,12 @@ void *vectorGet(vector* v, int index) {
 void vectorDelete(vector* v, int index) {
     if (index < 0 || index >= v->total)
         return;
-
     v->items[index] = NULL;
-
     for (int i = index; i < v->total - 1; i++) {
         v->items[i] = v->items[i + 1];
         v->items[i + 1] = NULL;
     }
-
     v->total--;
-
     if (v->total > 0 && v->total == v->capacity / 4)
         vectorResize(v, v->capacity / 2);
 }

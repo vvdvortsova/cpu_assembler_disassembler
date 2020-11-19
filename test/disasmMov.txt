@@ -1,3 +1,12 @@
-mov rbx, [9]
-mov rax, [100]
+push 8
+pop rax
+push 10
+push rbx
+mov rbx, [0]
+mov rax, [1]
+push [0]
+push [1]
+add
+out
 hlt
+

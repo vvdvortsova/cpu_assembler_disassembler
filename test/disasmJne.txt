@@ -1,18 +1,18 @@
 push 3
 push 1
-jne tb
-tb:
+jne t0
+t0:
 push 3
 out
-call fm
+call f1
 push -2
 push -3
 add
 out
 hlt
 
-
-fm:
+f1:
 in
 out
 ret
+

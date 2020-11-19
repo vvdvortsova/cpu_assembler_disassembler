@@ -26,9 +26,6 @@ This version of the stack machine is implemented with registers rax/rbx and jmp,
 | push [addr]| Pushes value from RAM by addr into stack |
 | pop [addr]| Pops value from stack into RAM by addr |
 | move rax, [addr]| Move value from RAM by addr and  |
-| cmp num1, num2| Compare values num1 and num2 and take the result in register rzx:{ -1, 0 , 1} |
-
-
 
 
 
@@ -87,6 +84,7 @@ like: "tswap", "tmove", "trun" and so on
 
 To see more examples search in test\
 
+CALL TAG\
 Swap two numbers in stack 
 ```bash
 push 10
@@ -108,6 +106,7 @@ pop rbx
 ret
 ```
 
+JMP TAG\
 Infinity loop
 ```bash
 tloop:
@@ -116,7 +115,81 @@ out
 jmp tloop
 hlt
 ```
+JNE TAG
+```bash
+push 3
+push 1
+jne tb
+tb:
+push 3
+out
+call fm
+push -2
+push -3
+add
+out
+hlt
 
+fm:
+in
+out
+ret
+
+>>>
+Result = 3
+Input value pls: 12
+Result = 12
+Result = -5
+```
+POP [addr] and PUSH [addr]\
+Write 1,2,3,4 in RAM and read it 
+```bash
+call f1
+push [0]
+out
+push [1]
+out
+push [2]
+out
+push [3]
+out
+hlt
+
+f1:
+push 0
+pop [0]
+push 1
+pop [1]
+push 2
+pop [2]
+push 3
+pop [3]
+ret
+
+>>>
+Result = 0
+Result = 1
+Result = 2
+Result = 3
+```
+
+MOV example
+```bash
+push 5
+pop rax
+push 10
+pop rbx
+mov rbx, [0]
+mov rax, [1]
+push [0]
+push [1]
+add
+out
+hlt
+
+>>>
+Result = 15
+```
 Using vector
 ```bash
 

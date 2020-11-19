@@ -73,8 +73,7 @@ const char* getStringOfOpCode(byte code);
  * Method prints vector for debug.
  * @param v
  */
-void printfVector(vector* v);
-
+void printfVectorWithTags(vector* v);
 /**
  * Method finds function/tag name by address.
  * @param v

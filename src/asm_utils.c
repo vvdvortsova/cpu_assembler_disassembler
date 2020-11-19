@@ -41,7 +41,7 @@ const char* getStringOfOpCode(byte code) {
     }
 }
 
-void printfVector(vector* v) {
+void printfVectorWithTags(vector* v) {
     printf("your vector %p\n",(void*)v);
     struct tag* a2 = calloc(1, sizeof(struct tag));
     for (int i = 0; i < v->total; ++i) {
@@ -49,6 +49,7 @@ void printfVector(vector* v) {
         printf("pos = %d fname = %s\n", a2->position, a2->name);
     }
 }
+
 int findFunctionByAddressInVector(vector* v, int addres, int* index) {
 //    printf("your vector %p\n",(void*)v);
     struct tag* a2 = calloc(1, sizeof(struct tag));

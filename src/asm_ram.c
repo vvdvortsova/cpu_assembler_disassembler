@@ -2,51 +2,44 @@
 
 int initRAM(RAM* ram, int sizeOfRAM) {
     ram->canaryL = canary;
-    ram->canaryR = canary;
-    ram->buffer = calloc(1, sizeof(vector));
-    vectorInit(ram->buffer);
+    ram->capacity = sizeOfRAM;
+    ram->buffer = calloc(sizeOfRAM, sizeof(double));
     if(ram->buffer == NULL) {
         printf("Can't allocate memory for RAM!\n");
         return EXIT_FAILURE;
     }
-    vectorResize(ram->buffer, sizeOfRAM);
+    ram->canaryR = canary;
     return EXIT_SUCCESS;
 }
 
 void destroyRAM(RAM* ram) {
-    vectorFree(ram->buffer);
+    free(ram->buffer);
 }
+
 
 double getValueFromRam(RAM* ram, int index) {
     if(verifyRAM(ram) == EXIT_FAILURE) {
         printf("RAM was corrupted!\n");
         exit(EXIT_FAILURE);
     }
-    if((index >= vectorTotal(ram->buffer)) || (index < 0)) {
+    if((index > ram->capacity) || (index < 0)) {
         printf("RAM SEGV!\n");// my little segv ^_^
         exit(EXIT_FAILURE);
     }
-    double result = *(double*)vectorGet(ram->buffer, index);
+    double result = ram->buffer[index];
     return result;
 }
 
-int writeValueInRamByAddress(RAM* ram, int index, double value) {
+void writeValueInRamByAddress(RAM* ram, int index, double value) {
     if(verifyRAM(ram) == EXIT_FAILURE) {
         printf("RAM was corrupted!\n");
         exit(EXIT_FAILURE);
     }
-    if((index >= vectorTotal(ram->buffer)) || (index < 0)) {
+    if((index > ram->capacity) || (index < 0)) {
         printf("RAM SEGV!\n");// my little segv ^_^
         exit(EXIT_FAILURE);
     }
-
-    vectorSet(ram->buffer, index, &value);
-
-    if(verifyRAM(ram) == EXIT_FAILURE) {
-        printf("RAM was corrupted!\n");
-        exit(EXIT_FAILURE);
-    }
-    return EXIT_SUCCESS;
+    ram->buffer[index] = value;
 }
 
 int verifyRAM(RAM* ram) {

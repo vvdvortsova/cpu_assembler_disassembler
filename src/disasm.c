@@ -86,7 +86,7 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                     fprintf(file,"%s\n", copy);
                 } else{
                     fprintf(stderr,"Can't find func name!:(\n");
-                    printfVector(tags);
+                    printfVectorWithTags(tags);
                 }
                 i+= sizeof(int);
                 break;
@@ -126,6 +126,11 @@ void disassembleSecondWayToWriteTags(char* byteCodes, int size, vector* tags, FI
                 fprintf(file,"%d", addr);
                 fprintf(file,"]\n");
                 i += sizeof(addr);
+                break;
+            case RET:
+            case HLT:
+                ++i;
+                fprintf(file,"%s\n\n", code);
                 break;
             default:
                 ++i;
