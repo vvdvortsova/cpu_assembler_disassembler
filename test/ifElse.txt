@@ -1,0 +1,31 @@
+tmain:
+push 5
+pop [0]
+push 5
+push [0]
+call filelse1
+hlt
+
+
+filelse1:
+je tif1
+push 2
+out
+push 5
+push [0]
+call fifelse2
+ret
+tif1:
+push 1
+out
+ret
+
+fifelse2:
+je tif2
+push 4
+out
+ret
+tif2:
+push 3
+out
+ret
