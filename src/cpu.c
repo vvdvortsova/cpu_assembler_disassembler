@@ -116,16 +116,9 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                 //look at the top of stack and get address of return point
                 //jump to return point
                 //or if it was func_state than we turn off it
-                if(cpu->cpuState == CALL_STATE) {
-                    cpu->cpuState = SIMPLE_STATE;
-                    addressOfFunction = StackPop_double(cpu->returnStack);
-                    i = addressOfFunction;
-                    break;
-                } else if (cpu->cpuState == FUNC_STATE) {
-                    cpu->cpuState = SIMPLE_STATE;
-                    i++;
-                    break;
-                }
+                cpu->cpuState = SIMPLE_STATE;
+                addressOfFunction = StackPop_double(cpu->returnStack);
+                i = addressOfFunction;
                 break;
             case PUSHR:
                 i++;//opCode
@@ -297,27 +290,27 @@ int conditionOp(Stack_double* stack, byte code) {
                 isOK = true;
             break;
         case JL:
-            if(!definitelyLessThan(arg1, arg2, EPS))
+            if(definitelyLessThan(arg1, arg2, EPS))
                 isOK = true;
             break;
         case JLE:
-            if(!approximatelyEqual(arg1, arg2, EPS))
+            if(approximatelyEqual(arg1, arg2, EPS))
                 isOK = true;
             break;
         case JG:
-            if(!definitelyGreaterThan(arg1, arg2, EPS))
+            if(definitelyGreaterThan(arg1, arg2, EPS))
                 isOK = true;
             break;
         case JGE:
-            if(!essentiallyEqual(arg1, arg2, EPS))
+            if(essentiallyEqual(arg1, arg2, EPS))
                 isOK = true;
             break;
         default:
             fprintf(stderr,"Unexpected command: %x in binary file!\nWhen trying to calculate conditional jmp", code);
             return EXIT_FAILURE;
     }
-    StackPush_double(stack, arg1);
-    StackPush_double(stack, arg2);
+//    StackPush_double(stack, arg1);
+//    StackPush_double(stack, arg2);
     if(isOK) {
         return EXIT_SUCCESS;
     }

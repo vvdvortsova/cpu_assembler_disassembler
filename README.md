@@ -84,6 +84,46 @@ like: "tswap", "tmove", "trun" and so on
 
 To see more examples search in test\
 
+FACTORIAL(5)
+```bash
+tmain:
+push 5
+pop [0]
+push 0
+pop [1]
+push [0]
+call fact
+pop [1]
+push [1]
+out
+hlt
+
+fact:
+pop [2]
+push 1
+push [2]
+je tifElse1
+push [2]
+push 1
+push [2]
+sub
+call fact
+pop [4]
+push [4]
+mul
+pop [5]
+push [5]
+ret
+
+tifElse1:
+push 1
+ret
+
+>>>
+Result = 120
+The program has finished executing in function!
+```
+
 CALL TAG\
 Swap two numbers in stack 
 ```bash
@@ -199,7 +239,7 @@ struct M{
 };
 
 int main(void) {
-    vector *v = calloc(1, sizeof(vector));
+    vector* v = calloc(1, sizeof(vector));
     struct M* a1 = calloc(1, sizeof(struct M));
     struct M* a3 = calloc(1, sizeof(struct M));
     a1->a = "awdwa";
