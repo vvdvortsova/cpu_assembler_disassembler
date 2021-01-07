@@ -83,6 +83,53 @@ Warning: name of your tag(метка) must start with "t"\
 like: "tswap", "tmove", "trun" and so on
 
 To see more examples search in test\
+WHILE\
+Evaluate f(5) = 1 + 2 + 3 + 4 + 5\
+And outputs every step
+```bash
+push [0]
+out
+```
+```bash
+tmain:
+push 0
+pop [0]
+push [0]
+out
+push 5
+push [0]
+call fwhile
+push [0]
+out
+hlt
+
+fwhile:
+jne telse1
+ret
+
+telse1:
+push [0]
+push 1
+add
+pop [0]
+push [0]
+out
+push 5
+push [0]
+call fwhile
+ret
+
+>>>
+Result = 0
+Result = 1
+Result = 2
+Result = 3
+Result = 4
+Result = 5
+Result = 5
+The program has finished executing in function!
+
+```
 
 FACTORIAL(5)
 ```bash
