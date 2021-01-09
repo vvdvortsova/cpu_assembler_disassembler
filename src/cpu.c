@@ -220,17 +220,10 @@ int processMachine(char* byteCodes, size_t size, CPU* cpu, RAM* ram) {
                 break;
             case IN:
                 ++i;
-                if(cpu->cpuState != FUNC_STATE) {
-                    arg1 = getDoubleFromInput("Input value please: ");
-                    StackPush_double(cpu->stack, arg1);
-                    break;
-                }
+                arg1 = getDoubleFromInput("Input value please: ");
+                StackPush_double(cpu->stack, arg1);
                 break;
             case HLT:
-                if(cpu->cpuState != FUNC_STATE) {
-                    printf("The program has finished executing in function!\n");
-                    return EXIT_SUCCESS;
-                }
                 printf("The program has finished executing!\n");
                 return EXIT_SUCCESS;
             default:
